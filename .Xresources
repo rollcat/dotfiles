@@ -4,7 +4,6 @@ Xft.hintstyle : hintslight
 Xft.hinting   : 1
 Xft.antialias : 1
 Xft.rgba      : rgb
-*font         : -*-terminus-*-*-*-*-16-*-*-*-*-*-*-u
 
 ! ===== colors
 ! Solarized color scheme for the X Window System
@@ -79,6 +78,7 @@ XLock.username    : username:
 XLock.password    : password: 
 
 ! ===== urxvt
+URxvt.font                   : -*-terminus-*-*-*-*-16-*-*-*-*-*-*-u
 URxvt.borderWidth            : 0
 URxvt.internalBorder         : 0
 URxvt.termName               : xterm-256color
