@@ -1,0 +1,29 @@
+#!/bin/sh
+set -eu
+hash echo git sed
+
+# [ ] git@github.com:user/some-repo.git
+# [ ] git@github.com:user/some.repo.git
+# [ ] git@github.com:user/some.repo
+# [x] https://github.com/user/some.repo -> github.com/user/some.repo
+# [x] git://git.suckless.org/some-repo  -> git.suckless.org/some-repo
+url_strip_protocol() {
+    sed -Ee 's#(https|git)?://(.+)#\2#'
+}
+
+main() {
+    url=$1
+    BASE_DIR=$HOME/src
+
+    dest_dir="${BASE_DIR}/$(echo $url | url_strip_protocol)"
+
+    if [ -d "$dest_dir" ]
+    then
+        cd "$dest_dir"
+        git fetch -a
+    else
+        git clone "$url" "$dest_dir"
+    fi
+}
+
+main "$@"
