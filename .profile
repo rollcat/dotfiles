@@ -8,14 +8,16 @@ has() {
 # Paths
 export GOPATH=~/gocode
 
-# Get an os-arch pair, e.g. Linux-aarch64 or Darwin-x86_64
-_arch=$(uname -sm | tr ' ' -)
+# Get os & arch. Arch is OS-specific, e.g.:
+# Linux aarch64, Darwin x86_64, OpenBSD amd64
+_os=$(uname -s)
+_arch=$(uname -m)
 
 # Detect paths which should be added to $PATH
 _mkpath() {
     # Put our own ~/bin first.
     # Also pick a subdirectory with precompiled executables for our arch.
-    echo ~/bin/$_arch
+    echo ~/bin/${_os}-${_arch}
     echo ~/bin
     echo ~/.local/bin
     echo ~/.cargo/bin
@@ -71,7 +73,12 @@ export GPG_TTY=$(tty)
 # Locale
 unset LANGUAGE LC_ADDRESS LC_ALL LC_COLLATE LC_IDENTIFICATION LC_MONETARY \
       LC_NAME LC_NUMERIC LC_TELEPHONE LC_TIME
-export LANG=en_US.UTF-8 LC_CTYPE=en_US.UTF-8
+if [ "x${_os}" = xOpenBSD ]
+then
+    export LANG=C.UTF-8 LC_CTYPE=C.UTF-8
+else
+    export LANG=en_US.UTF-8 LC_CTYPE=en_US.UTF-8
+fi
 
 # Software development
 export LD_LIBRARY_PATH=~/.local/lib
@@ -124,9 +131,10 @@ p=$(which less more 2>/dev/null | head -1)
 [[ -n $p ]] && export PAGER=$p
 p=$(which mg kak vim vi nano 2>/dev/null | head -1)
 [[ -n $p ]] && export EDITOR=$p VISUAL=$p
-p=$(whence firefox chromium chrome surf2 surf dillo x-www-browser \
-          2>/dev/null | head -1)
+p=$(which firefox chromium chrome surf2 surf dillo x-www-browser 2>/dev/null | head -1)
 [[ -n $p ]] && export BROWSER=$p
+p=$(which i3 dwm awesome cwm x-window-manager xterm 2>/dev/null | head -1)
+[[ -n $p ]] && export WM=$p
 unset p
 
 # Aliases for interactive use
