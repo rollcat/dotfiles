@@ -1,0 +1,10 @@
+#!/bin/sh
+set -eu
+if which nproc 2>/dev/null
+then
+    # We have nproc; we're likely on Linux.
+    exec nproc
+else
+    # On macOS and OpenBSD, we can check sysctl.
+    exec sysctl -n hw.ncpu
+fi
