@@ -34,6 +34,7 @@ _mkpath() {
 
     echo /usr/local/bin
     echo /usr/local/sbin
+    echo /usr/X11R6/bin
     echo /usr/bin
     echo /usr/sbin
     echo /usr/games
