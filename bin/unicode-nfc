@@ -1,0 +1,8 @@
+#!/usr/bin/env python3
+# https://www.unicode.org/faq/normalization.html
+import sys
+import unicodedata
+
+
+for line in sys.stdin:
+    print(unicodedata.normalize("NFC", line), file=sys.stdout, end="")
