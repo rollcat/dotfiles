@@ -11,10 +11,6 @@ fi
 # Source .profile, which has things common to all shells.
 . ~/.profile
 
-# Set up the prompt
-autoload -Uz promptinit
-promptinit
-
 # Use emacs keybindings even if our EDITOR is set to vi
 bindkey -e
 
@@ -51,26 +47,11 @@ if which op > /dev/null
 then eval "$(op completion zsh)"
 fi
 
-
 # autocd
 setopt autocd
 
 # Word breaking
 local WORDCHARS='*?_[]~=&;!#$%^(){}<>'
-
-# Prompt helpers
-: ${USER:=$(id -un)}
-: ${USER_ID:=$(id -u)}
-
-if (( USER_ID ))
-then FG_USER=green
-else FG_USER=red
-fi
-
-if [ -n "$SSH_CONNECTION" ]
-then FG_HOST=red
-else FG_HOST=green
-fi
 
 # Terminal window title
 termtitle() {
@@ -82,14 +63,12 @@ default_termtitle() {
 
 # prompt
 # TODO: highlight non-zero exit status
-PS1=": %? %F{$FG_USER}%n%f\
-@%F{$FG_HOST}%m%f\
- %~
-%# "
+PS1="%# "
 precmd() {
     default_termtitle
     # send a bell to mark window urgent
     echo -n '\a'
+    PS1="$(prompt)"
 }
 preexec() {
     termtitle "$2"
