@@ -86,6 +86,7 @@ chpwd() {
 }
 
 # Plugins
+mkdir -p ~/.zsh.d
 for fname in $(find ~/.zsh.d -type f -name "*.plugin.zsh"); do
     source "$fname"
 done
