@@ -1,12 +1,27 @@
 [user]
 	email = harry666t@gmail.com
 	name = Kamil Cholewinski
+
 [core]
 	# System-wide .gitignore
 	excludesfile = ~/.gitignore-global
+
 [pull]
 	# When pulling, rebase instead of merging
 	rebase = true
+
+[push]
+	default = current
+
+[gc]
+	auto = 0
+
+[magit]
+	extension = svn
+
+[merge]
+	conflictstyle = diff3
+
 [filter "lfs"]
 	smudge = git-lfs smudge -- %f
 	clean = git-lfs clean -- %f
