@@ -1,0 +1,21 @@
+# -*- mode: shell-script -*-
+# Initialization for interactive shells.
+
+# This helps Emacs' TRAMP mode.
+if [[ $TERM == "dumb" ]]; then
+    PS1='$ '
+    return
+fi
+
+# Source .profile, which has things common to all shells.
+. ~/.profile
+
+# prompt
+PS1='$(prompt)'
+
+# fallback #! interpreter
+EXECSHELL=/bin/false
+
+# history
+HISTFILE=$HOME/.mksh_history
+HISTSIZE=10000
