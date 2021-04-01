@@ -2,7 +2,7 @@
 umask 022
 
 has() {
-    which $@ 2>&1 > /dev/null
+    which $@ 2>/dev/null >/dev/null
 }
 
 # Paths
@@ -24,8 +24,8 @@ _mkpath() {
     echo ~/.poetry/bin
     echo $GOPATH/bin
 
-    if [ -d .gem/ruby ]
-    then find .gem/ruby -maxdepth 2 -type d -name bin
+    if [ -d ~/.gem/ruby ]
+    then find ~/.gem/ruby -maxdepth 2 -type d -name bin
     fi
 
     if [ -d /Applications ]
@@ -45,11 +45,11 @@ _mkpath() {
 export PATH=$(_mkpath | tr '\n' :)
 
 # Shell-specific configurations
-case $SHELL in
-    */ksh)
+case "$0" in
+    -ksh)
         export ENV=$HOME/.kshrc
         ;;
-    */mksh)
+    mksh)
         export ENV=$HOME/.mkshrc
         ;;
 esac
