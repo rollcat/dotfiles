@@ -38,6 +38,17 @@ then
     xinput set-prop "/dev/wsmouse" "WS Pointer Wheel Emulation Inertia" 3
 fi
 
+# Natural scrolling
+for id in $(xinput list --id-only)
+do
+    if xinput --list-props $id \
+        | grep -q "libinput Natural Scrolling Enabled"
+    then
+        xinput set-int-prop $id \
+            "libinput Natural Scrolling Enabled" 8 1
+    fi
+done
+
 # Remap caps lock to control
 setxkbmap -option ctrl:nocaps
 
