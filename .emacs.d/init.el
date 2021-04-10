@@ -12,18 +12,22 @@
   (blink-cursor-mode -1)
   (column-number-mode t)
   (delete-selection-mode t)
-  (set-fringe-mode 6)
   (tooltip-mode -1)
-  (unless system-is-mac (menu-bar-mode -1))
-  (tool-bar-mode -1)
+  (when window-system
+    (set-fringe-mode 6)
+    (tool-bar-mode -1)
+    (mouse-wheel-mode)
+    nil)
+  (unless system-is-mac
+    (menu-bar-mode -1)
+    nil)
   (setq ring-bell-function 'ignore)
   ;; This will cause the pasted text to appear at point (like what you'd
   ;; see in xterm), instead of where the mouse cursor is pointing.
   (setq mouse-yank-at-point t)
-  (mouse-wheel-mode)
   nil)
 
-(progn
+(when window-system
   ;; Find a font we like
   (defun font-exists-p (name)
     (if (find-font (font-spec :name name)) t nil))
