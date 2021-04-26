@@ -102,6 +102,7 @@ fi
 # Docker
 export DOCKER_BUILDKIT=1
 export COMPOSE_DOCKER_CLI_BUILD=1
+export DOCKER_SCAN_SUGGEST=false
 
 # Disable Microsoft's telemetry
 export DOTNET_CLI_TELEMETRY_OPTOUT=1
