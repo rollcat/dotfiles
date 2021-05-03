@@ -34,9 +34,16 @@ import uuid
 try:
     import readline
     import rlcompleter
+
     readline.parse_and_bind("tab: complete")
 except ImportError:
     pass
+
+
+# Type hints
+T = t.TypeVar("T")
+T1 = t.TypeVar("T1")
+T2 = t.TypeVar("T2")
 
 
 # SI constants: decimal
@@ -58,11 +65,9 @@ mile = 1.609  # km
 lbs = pound = 0.453592  # kg
 
 
-def group_by(xs, func):
-    """Group elements in xs by key (from func).
-
-    """
-    tmp = {}
+def group_by(xs: t.Iterable[T1], func: t.Callable[[T1], T2]) -> t.Dict[T2, t.List[T1]]:
+    """Group elements in xs by key (from func)."""
+    tmp: t.Dict[T2, t.List[T1]] = {}
     for x in xs:
         key = func(x)
         tmp.setdefault(key, [])
@@ -71,7 +76,14 @@ def group_by(xs, func):
 
 
 def aspect_ratio(width: int, height: int) -> t.Tuple[int, int]:
-    """Determine the aspect ratio for a pair of integers (a rectange).
-    """
+    """Determine the aspect ratio for a pair of integers (a rectange)."""
     gcd = math.gcd(width, height)
-    return (width // gcd, height // gcd) 
+    return (width // gcd, height // gcd)
+
+
+def histogram(it: t.Iterable[T]) -> t.Dict[T, int]:
+    """Count number of occurences of each value in the iterable."""
+    hist: t.Dict[T, int] = {}
+    for obj in it:
+        hist[obj] = hist.get(obj, 0) + 1
+    return hist
