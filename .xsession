@@ -1,8 +1,16 @@
 #!/bin/sh
+### Some login shells (like ksh) need $ENV to read their .*rc
+case "$(getent passwd $(id -un) | cut -d: -f7)" in
+    */ksh)
+        export ENV=$HOME/.kshrc
+        ;;
+    */mksh)
+        export ENV=$HOME/.mkshrc
+        ;;
+esac
+
 ### Base settings: take from .profile
 . ~/.profile
-export MOZ_ACCELERATED=1
-export MOZ_WEBRENDER=1
 
 ### Preferences
 if [ -r ~/.Xresources ]
@@ -67,6 +75,10 @@ fi
 if has syncthing
 then syncthing &
 fi
+
+# Firefox
+export MOZ_ACCELERATED=1
+export MOZ_WEBRENDER=1
 
 LOCATION=48.2:16.3667  # Vienna, AT
 if has redshift
