@@ -31,6 +31,7 @@
   ;; Find a font we like
   (defun font-exists-p (name)
     (if (find-font (font-spec :name name)) t nil))
+  (require 'seq)
   (let ((font (seq-find 'font-exists-p '("Inconsolata 22" "Terminus 12"))))
     (when font
       (add-to-list 'default-frame-alist `(font . ,font))
