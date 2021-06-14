@@ -38,5 +38,5 @@ then
     load_completion rc
     # load_completion gopass
     load_completion git
-    load_completion man
+    # load_completion man  # slow
 fi
