@@ -131,6 +131,7 @@ end tell
       ))
 
   (defun update-theme ()
+    (interactive)
     (let ((ap (get-appearance-preferences)))
       (mapcar #'disable-theme custom-enabled-themes)
       (cond
