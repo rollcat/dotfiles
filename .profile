@@ -5,9 +5,6 @@ has() {
     which $@ 2>/dev/null >/dev/null
 }
 
-# Paths
-export GOPATH=~/gocode
-
 # Get os & arch. Arch is OS-specific, e.g.:
 # Linux aarch64, Darwin x86_64, OpenBSD amd64
 _os=$(uname -s)
@@ -22,7 +19,13 @@ _mkpath() {
     echo ~/.local/bin
     echo ~/.cargo/bin
     echo ~/.poetry/bin
+
+    export GOPATH=~/go
     echo $GOPATH/bin
+
+    export PYENV_ROOT=~/.pyenv
+    echo ${PYENV_ROOT}/bin
+    echo ${PYENV_ROOT}/shims
 
     if [ -d ~/.gem/ruby ]
     then find ~/.gem/ruby -maxdepth 2 -type d -name bin
@@ -85,10 +88,9 @@ fi
 export LD_LIBRARY_PATH=~/.local/lib
 export PKG_CONFIG_PATH=~/.local/lib/pkgconfig
 export PYTHONSTARTUP=~/.pythonrc.py
-# NOTE: GOPATH belongs here, but we also need it for $PATH
+# NOTE: GOPATH and PYENV_ROOT belong here, but we also need them for $PATH
 
 # pyenv, rbenv, etc
-export PYENV_ROOT="$HOME/.pyenv"
 if has pyenv; then
     eval "$(pyenv init -)"
     if has pyenv-virtualenv-init; then
@@ -96,7 +98,7 @@ if has pyenv; then
     fi
 fi
 if has rbenv; then
-      eval "$(rbenv init -)"
+    eval "$(rbenv init -)"
 fi
 
 # Docker
