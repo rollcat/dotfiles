@@ -306,7 +306,7 @@ end tell
 ]]) end)
 
 hs.hotkey.bind({"cmd", "ctrl"}, "2", function() hs.osascript.applescript([[
-tell application "Firefox"
+tell application "Safari"
    activate
 end tell
 ]]) end)
