@@ -74,6 +74,11 @@ export MAIL=/var/mail/${LOGNAME:-$USER}
 # GPG agent
 export GPG_TTY=$(tty)
 
+# SSH agent
+if [ -S ~/.ssh/agent.sock ]
+then export SSH_AUTH_SOCK=~/.ssh/agent.sock
+fi
+
 # Locale
 unset LANGUAGE LC_ADDRESS LC_ALL LC_COLLATE LC_IDENTIFICATION LC_MONETARY \
       LC_NAME LC_NUMERIC LC_TELEPHONE LC_TIME
