@@ -95,17 +95,6 @@ export PKG_CONFIG_PATH=~/.local/lib/pkgconfig
 export PYTHONSTARTUP=~/.pythonrc.py
 # NOTE: GOPATH and PYENV_ROOT belong here, but we also need them for $PATH
 
-# pyenv, rbenv, etc
-if has pyenv; then
-    eval "$(pyenv init -)"
-    if has pyenv-virtualenv-init; then
-        eval "$(pyenv virtualenv-init -)"
-    fi
-fi
-if has rbenv; then
-    eval "$(rbenv init -)"
-fi
-
 # Docker
 export DOCKER_BUILDKIT=1
 export COMPOSE_DOCKER_CLI_BUILD=1
