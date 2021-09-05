@@ -215,7 +215,11 @@ end tell
   (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
   (add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
   (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
-  )
+  (defun web-django-mode ()
+    (interactive)
+    (web-mode)
+    (web-mode-set-engine "django"))
+  nil)
 
 (require 'info)
 (require 'python)
