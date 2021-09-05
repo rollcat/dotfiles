@@ -110,6 +110,9 @@ fi
 export DOCKER_BUILDKIT=1
 export COMPOSE_DOCKER_CLI_BUILD=1
 export DOCKER_SCAN_SUGGEST=false
+if has minikube && [ -z "${DOCKER_HOST:-}" ]
+then eval $(minikube -p minikube docker-env)
+fi
 
 # Disable Microsoft's telemetry
 export DOTNET_CLI_TELEMETRY_OPTOUT=1
