@@ -103,8 +103,10 @@ if has minikube && [ -z "${DOCKER_HOST:-}" ]
 then eval $(minikube -p minikube docker-env)
 fi
 
-# Disable Microsoft's telemetry
+# Disable telemetry
+export DO_NOT_TRACK=1
 export DOTNET_CLI_TELEMETRY_OPTOUT=1
+export HOMEBREW_NO_ANALYTICS=1
 
 # Pretty colors
 if has dircolors
