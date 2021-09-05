@@ -252,6 +252,41 @@ end tell
   (global-set-key (kbd "C-a") 'mwim-beginning)
   )
 
+;; compile & run what I mean
+(defun dwim-run ()
+  (interactive)
+  (defun dwim-run-rust ()
+    (setenv "RUST_BACKTRACE" "full")
+    (rust-run))
+  (message "DWIM run on major mode: %s" major-mode)
+  (cond
+   ((equal major-mode 'emacs-lisp-mode) (eval-buffer))
+   ((equal major-mode 'rust-mode) (dwim-run-rust))
+   ((equal major-mode 'rustic-mode) (dwim-run-rust))
+   (t (compile))))
+
+(defun dwim-test ()
+  (interactive)
+  (defun dwim-test-rust ()
+    (setenv "RUST_BACKTRACE" "full")
+    (rust-test))
+  (message "DWIM test on major mode: %s" major-mode)
+  (cond
+   ((equal major-mode 'rust-mode) (dwim-test-rust))
+   ((equal major-mode 'rustic-mode) (dwim-test-rust))
+   (nil)))
+
+;; fix/fmt what I mean
+(defun dwim-fix ()
+  (interactive)
+  (defun dwim-fix-rust ()
+    (shell-command "cargo fix --allow-staged && cargo fmt"))
+  (message "DWIM fix on major mode: %s" major-mode)
+  (cond
+   ((equal major-mode 'rust-mode) (dwim-fix-rust))
+   ((equal major-mode 'rustic-mode) (dwim-fix-rust))
+   (nil)))
+
 (defun open-finder-here ()
   (interactive)
   (shell-command "open ."))
@@ -305,6 +340,9 @@ end tell
   ;; more custom mac stuff
   (global-set-key (kbd "s-O") 'open-finder-here)
   (global-set-key (kbd "s-b") 'ivy-switch-buffer)
+  (global-set-key (kbd "s-r") 'dwim-run)
+  (global-set-key (kbd "s-R") 'dwim-test)
+  (global-set-key (kbd "C-s-r") 'dwim-fix)
   ;; (global-set-key (kbd "s-b") 'helm-mini)
 
   ;; disable annoying keys
