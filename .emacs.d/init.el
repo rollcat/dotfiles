@@ -223,6 +223,7 @@ end tell
 
 (require 'info)
 (require 'python)
+(use-package pip-requirements)
 
 (use-package editorconfig
   :config
