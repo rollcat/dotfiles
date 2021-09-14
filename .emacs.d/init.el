@@ -18,9 +18,8 @@
     (tool-bar-mode -1)
     (mouse-wheel-mode)
     nil)
-  (unless system-is-mac
-    (menu-bar-mode -1)
-    nil)
+  (unless (and window-system system-is-mac)
+    (menu-bar-mode -1))
   (setq ring-bell-function 'ignore)
   ;; This will cause the pasted text to appear at point (like what you'd
   ;; see in xterm), instead of where the mouse cursor is pointing.
