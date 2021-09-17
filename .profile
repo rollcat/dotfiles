@@ -35,6 +35,7 @@ _mkpath() {
     then find /Applications -type d -name bin -maxdepth 3
     fi
 
+    echo /opt/homebrew/bin
     echo /usr/local/bin
     echo /usr/local/sbin
     echo /usr/X11R6/bin
