@@ -43,6 +43,22 @@
   (unless (file-exists-p custom-file) (make-empty-file custom-file))
   (load custom-file))
 
+(progn
+  ;; on macOS, we can use the Option key either as Option or Meta.
+  (setq mac-option-modifier 'meta)
+  (setq mac-command-modifier 'super)
+  (defun mac-switch-meta ()
+    "Switch between using Option as Meta or Option"
+    (interactive)
+    (if (eq mac-option-modifier nil)
+        (progn
+          (setq mac-option-modifier 'meta)
+          (message "Option is Meta"))
+      (progn
+        (setq mac-option-modifier nil)
+        (message "Option is Option"))))
+  nil)
+
 ;; Initialize package system
 (require 'package)
 
@@ -119,9 +135,9 @@
 tell application \"System Events\"
   tell appearance preferences
     if (dark mode) then
-      return \"dark\"
+      return dark
     else
-      return \"light\"
+      return light
     end if
   end tell
 end tell
@@ -305,8 +321,9 @@ end tell
   (global-set-key (kbd "C-x C-c") 'kill-buffer)
   (global-set-key (kbd "C-x C-r") 'replace-string)
   (global-set-key (kbd "C-x C-v") 'find-file-emacs-init)
+  (global-set-key (kbd "C-x .") 'save-buffers-kill-emacs)
 
-  ;; follow mac conventions
+  ;; follow macOS conventions
   (global-set-key (kbd "s-<right>") 'mwim-end)
   (global-set-key (kbd "s-<left>") 'mwim-beginning)
   (global-set-key (kbd "s-<up>") 'beginning-of-buffer)
@@ -322,9 +339,21 @@ end tell
   (global-set-key (kbd "C-<up>") 'backward-paragraph)
   (global-set-key (kbd "C-<down>") 'forward-paragraph)
 
+  ;; CUA
+  (global-set-key (kbd "s-z") 'undo)
+  (global-set-key (kbd "s-x") 'cua-cut-region)
+  (global-set-key (kbd "s-c") 'cua-copy-region)
+  (global-set-key (kbd "s-v") 'cua-paste)
+  (global-set-key (kbd "s-V") 'counsel-yank-pop)
+
+  ;; misc
+  (global-set-key (kbd "s-q") 'save-buffers-kill-emacs)
   (global-set-key (kbd "s-W") 'delete-frame)
   (global-set-key (kbd "s-o") 'find-file)
+  (global-set-key (kbd "s-e") 'mac-switch-meta)
+  (global-set-key (kbd "s-a") 'mark-whole-buffer)
   ;; (global-set-key (kbd "s-o") 'helm-find-files)
+  (global-set-key (kbd "s-l") 'goto-line)
   (global-set-key (kbd "s-p") nil)
   (global-set-key (kbd "s-t") nil)
   (global-set-key (kbd "s-u") nil)
