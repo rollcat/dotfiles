@@ -144,3 +144,9 @@ unset p
 alias py=python3
 alias ipy='python3 -m IPython'
 alias tf=terraform
+
+# Change to a directory, and activate a virtualenv, if present
+cde() {
+    cd $1
+    test -f ./.venv/bin/activate && . ./.venv/bin/activate
+}
