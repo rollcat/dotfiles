@@ -369,6 +369,7 @@ end tell
   (global-set-key (kbd "s-s") 'save-buffer)
   (global-set-key (kbd "C-<tab>") 'next-buffer)
   (global-set-key (kbd "C-S-<tab>") 'previous-buffer)
+  (global-set-key (kbd "M-<tab>") 'other-frame)
 
   ;; more custom mac stuff
   (global-set-key (kbd "s-O") 'open-finder-here)
