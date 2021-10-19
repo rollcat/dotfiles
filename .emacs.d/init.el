@@ -124,10 +124,13 @@
   (global-set-key (kbd "C-x g") 'magit-status))
 
 ;; Theme
-(use-package solarized-theme
-  :config
-  (setq preferred-dark-theme 'solarized-zenburn)
-  (setq preferred-light-theme 'solarized-light-high-contrast)
+(progn
+  (setq preferred-dark-theme nil)
+  (setq preferred-light-theme nil)
+  (use-package solarized-theme
+    :config
+    (setq preferred-dark-theme 'solarized-zenburn)
+    (setq preferred-light-theme 'solarized-light-high-contrast))
 
   (defun get-appearance-preferences ()
     (if system-is-mac
@@ -147,12 +150,14 @@ end tell
 
   (defun update-theme ()
     (interactive)
-    (let ((ap (get-appearance-preferences)))
-      (mapcar #'disable-theme custom-enabled-themes)
-      (cond
-       ((equal ap "dark")  (load-theme preferred-dark-theme))
-       ((equal ap "light") (load-theme preferred-light-theme))
-       (t nil))))
+    (mapcar #'disable-theme custom-enabled-themes)
+    (let* ((ap (get-appearance-preferences))
+           (preferred-theme
+            (cond
+             ((equal ap "dark")  preferred-dark-theme)
+             ((equal ap "light") preferred-light-theme)
+             (t nil))))
+      (when preferred-theme (load-theme preferred-theme t))))
 
   (custom-set-faces
    '(dired-subtree-depth-1-face ((t nil)))
