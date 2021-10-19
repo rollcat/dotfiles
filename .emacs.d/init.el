@@ -453,6 +453,8 @@ end tell
 
   nil)
 
+(use-package string-inflection)
+
 ;; Don't make me spell out "yes" <enter>
 (fset 'yes-or-no-p 'y-or-n-p)
 (put 'downcase-region 'disabled nil)
