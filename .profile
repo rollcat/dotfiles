@@ -31,6 +31,10 @@ _mkpath() {
     then find ~/.gem/ruby -maxdepth 2 -type d -name bin
     fi
 
+    if [ -d ~/Library/Python ]
+    then find ~/Library/Python -maxdepth 2 -type d -name bin
+    fi
+
     if [ -d /Applications ]
     then find /Applications -type d -name bin -maxdepth 3
     fi
