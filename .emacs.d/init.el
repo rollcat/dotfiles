@@ -24,6 +24,8 @@
   ;; This will cause the pasted text to appear at point (like what you'd
   ;; see in xterm), instead of where the mouse cursor is pointing.
   (setq mouse-yank-at-point t)
+  ;; Unicode and UTF8
+  (prefer-coding-system 'utf-8)
   nil)
 
 (when window-system
