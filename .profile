@@ -91,6 +91,7 @@ fi
 
 # Software development
 export LD_LIBRARY_PATH=~/.local/lib
+export LIBRARY_PATH=/opt/homebrew/lib
 export PKG_CONFIG_PATH=~/.local/lib/pkgconfig
 export PYTHONSTARTUP=~/.pythonrc.py
 # NOTE: GOPATH and PYENV_ROOT belong here, but we also need them for $PATH
