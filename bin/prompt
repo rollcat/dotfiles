@@ -1,0 +1,3 @@
+#!/bin/sh
+set -eu
+exec printf ': %s@%s %s\n$ ' "${USER:-$(id -nu)}" "${HOSTNAME:-$(hostname)}" "${PWD:-$(pwd)}"

@@ -13,10 +13,13 @@ import (
 	"strings"
 )
 
+type Color string
+
 var rich = false
 var prompt = "$"
-var userColor = "green"
-var hostColor = "green"
+var userColor = Color("green")
+var hostColor = Color("green")
+var reset = Color("reset")
 
 func rescue() {
 	// Do something useful when encountering an unrecoverable error
@@ -24,16 +27,16 @@ func rescue() {
 	os.Exit(0)
 }
 
-func color(name string) string {
+func (c Color) ansi() string {
 	if !rich {
 		return ""
 	}
-	switch name {
-	case "red":
+	switch c {
+	case Color("red"):
 		return "\033[31m"
-	case "green":
+	case Color("green"):
 		return "\033[32m"
-	case "reset":
+	case Color("reset"):
 		return "\033[0m"
 	default:
 		return ""
@@ -69,17 +72,17 @@ func main() {
 	if strings.HasPrefix(cwd, home) {
 		cwd = "~" + cwd[len(home):]
 	}
-	if os.Getenv("SSH_CONNECTION") != "" {
+	if os.Getenv("SSH_CLIENT") != "" {
 		hostColor = "red"
 	}
 	fmt.Printf(
 		": %s%s%s@%s%s%s %s\n%s ",
-		color(userColor),
+		userColor.ansi(),
 		u.Username,
-		color("reset"),
-		color(hostColor),
+		reset.ansi(),
+		hostColor.ansi(),
 		host,
-		color("reset"),
+		reset.ansi(),
 		cwd,
 		prompt,
 	)
