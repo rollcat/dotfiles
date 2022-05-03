@@ -280,11 +280,14 @@ end tell
   (defun dwim-run-rust ()
     (setenv "RUST_BACKTRACE" "full")
     (rust-run))
+  (defun dwim-run-go ()
+    (shell-command "go run ."))
   (message "DWIM run on major mode: %s" major-mode)
   (cond
    ((equal major-mode 'emacs-lisp-mode) (eval-buffer))
    ((equal major-mode 'rust-mode) (dwim-run-rust))
    ((equal major-mode 'rustic-mode) (dwim-run-rust))
+   ((equal major-mode 'go-mode) (dwim-run-go))
    (t (compile))))
 
 (defun dwim-test ()
@@ -292,10 +295,13 @@ end tell
   (defun dwim-test-rust ()
     (setenv "RUST_BACKTRACE" "full")
     (rust-test))
+  (defun dwim-test-go ()
+    (shell-command "go test"))
   (message "DWIM test on major mode: %s" major-mode)
   (cond
    ((equal major-mode 'rust-mode) (dwim-test-rust))
    ((equal major-mode 'rustic-mode) (dwim-test-rust))
+   ((equal major-mode 'go-mode) (dwim-test-go))
    (nil)))
 
 ;; fix/fmt what I mean
@@ -303,10 +309,13 @@ end tell
   (interactive)
   (defun dwim-fix-rust ()
     (shell-command "cargo fix --allow-staged && cargo fmt"))
+  (defun dwim-fix-go ()
+    (shell-command "go fmt"))
   (message "DWIM fix on major mode: %s" major-mode)
   (cond
    ((equal major-mode 'rust-mode) (dwim-fix-rust))
    ((equal major-mode 'rustic-mode) (dwim-fix-rust))
+   ((equal major-mode 'go-mode) (dwim-fix-go))
    (nil)))
 
 (defun open-finder-here ()
