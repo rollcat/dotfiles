@@ -1,9 +1,3 @@
-// build with:
-// GOOS=darwin GOARCH=amd64 go build -o ~/bin/Darwin-x86_64/prompt ~/bin/src/prompt.go
-// GOOS=darwin GOARCH=arm64 go build -o ~/bin/Darwin-arm64/prompt ~/bin/src/prompt.go
-// GOOS=linux GOARCH=amd64 go build -o ~/bin/Linux-x86_64/prompt ~/bin/src/prompt.go
-// GOOS=linux GOARCH=arm64 go build -o ~/bin/Linux-aarch64/prompt ~/bin/src/prompt.go
-// GOOS=openbsd GOARCH=amd64 go build -o ~/bin/OpenBSD-amd64/prompt ~/bin/src/prompt.go
 package main
 
 import (
