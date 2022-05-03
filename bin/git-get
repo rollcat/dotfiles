@@ -2,20 +2,34 @@
 set -eu
 hash echo git sed
 
-# [ ] git@github.com:user/some-repo.git
-# [ ] git@github.com:user/some.repo.git
-# [ ] git@github.com:user/some.repo
-# [x] https://github.com/user/some.repo -> github.com/user/some.repo
-# [x] git://git.suckless.org/some-repo  -> git.suckless.org/some-repo
-url_strip_protocol() {
-    sed -Ee 's#(https|git)?://(.+)#\2#'
+# git@github.com:user/some-repo.git     -> github.com/user/some-repo
+# git@github.com:user/some.repo.git     -> github.com/user/some.repo
+# git@github.com:user/some.repo         -> github.com/user/some.repo
+# git://example.com/some-repo.git       -> example.com/some-repo
+# https://github.com/user/some.repo     -> github.com/user/some.repo
+# https://github.com/user/some.repo.git -> github.com/user/some.repo
+
+url_fix() {
+    _strip_protocol | _strip_user | tr : / | _strip_dotgit
+}
+
+_strip_protocol() {
+    sed -Ee 's#^(https|git)?://(.+)#\2#'
+}
+
+_strip_user() {
+    cut -d@ -f2
+}
+
+_strip_dotgit() {
+    sed -Ee 's#(.+)\.git$#\1#'
 }
 
 main() {
     url=$1
     BASE_DIR=$HOME/src
 
-    dest_dir="${BASE_DIR}/$(echo $url | url_strip_protocol)"
+    dest_dir="${BASE_DIR}/$(echo $url | url_fix)"
 
     if [ -d "$dest_dir" ]
     then
