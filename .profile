@@ -15,6 +15,10 @@ _mkpath() {
     # Put our own ~/bin first.
     # Also pick a subdirectory with precompiled executables for our arch.
     echo ~/bin/${_os}-${_arch}
+    # On Darwin arm64, we can also use x86_64 binaries.
+    if [ "x${_os}-${_arch}" = "xDarwin-arm64" ]
+    then echo ~/bin/Darwin-x86_64
+    fi
     echo ~/bin
     echo ~/.local/bin
     echo ~/.cargo/bin
