@@ -1,0 +1,3 @@
+#!/bin/sh
+set -eu
+dpkg --get-selections | awk '$2=="deinstall" {print $1}' | xargs dpkg --purge
