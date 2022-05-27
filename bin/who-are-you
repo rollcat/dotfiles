@@ -1,0 +1,41 @@
+#!/bin/sh
+set -eu
+# Identify a local IP address
+
+has() {
+    which "$@" >/dev/null 2>/dev/null
+}
+
+who_are_you() {
+    if has mdnsctl
+    then
+        for arg
+        do
+            mdnsctl rlookup "$arg"
+        done
+    elif has avahi-resolve-address
+    then
+        avahi-resolve-address -- "$@" || true
+    elif has dig
+    then
+        for arg
+        do
+            echo "$arg" $(dig -x "$arg" @224.0.0.251 -p 5353 +short +time=1 || true)
+        done
+    else
+        for arg
+        do
+            echo "$arg"
+        done
+    fi
+}
+
+main() {
+    for host in "$@"
+    do
+        who_are_you "$host"
+    done
+    
+}
+
+main "$@"

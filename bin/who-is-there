@@ -1,0 +1,27 @@
+#!/bin/sh
+set -eu
+# Print the IPs of known neighbors' addresses, per the ARP cache.
+
+whosthere_Darwin() {
+    arp -na | sed -Ee 's/.*\(([0-9a-f\.:]+)\).*/\1/'
+}
+
+whosthere_Linux() {
+    arp -ne | tail +2 | awk '{print $1}'
+}
+
+whosthere_OpenBSD() {
+    arp -na | tail +2 | awk '{print $1}'
+}
+
+whosthere_nmap() {
+    # XXX not used
+    nmap -sn -n -T5 -oG - 192.168.0.0/24 \
+        | awk '$1 == "Host:" { print $2 }'
+}
+
+main() {
+    whosthere_$(uname) | grep-rfc1918 | sort | uniq
+}
+
+main "$@"
