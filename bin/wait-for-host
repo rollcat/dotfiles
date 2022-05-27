@@ -1,0 +1,76 @@
+#!/bin/sh
+set -eu
+
+# Continues pinging named hosts in order, until each of them goes up
+# (-u; default) or down (-d).
+
+TIMEOUT=1
+
+check_ping() {
+    case $(uname) in
+        Darwin)
+            ping -qQ -c1 -t${TIMEOUT} "$1" 2>/dev/null >/dev/null
+            ;;
+        Linux)
+            ping -q -c1 -W${TIMEOUT} "$1" 2>/dev/null >/dev/null
+            ;;
+        OpenBSD)
+            ping -q -c1 -w${TIMEOUT} "$1" 2>/dev/null >/dev/null
+            ;;
+        *)
+            printf 'unsupported OS: %s' $(uname)
+            exit 111
+            ;;
+    esac
+}
+
+main() {
+    mode=up
+    args=$(getopt "du" $*)
+    set -- $args
+    while :; do
+        case "$1" in
+            -u)
+                mode=up
+                shift
+                ;;
+            -d)
+                mode=down
+                shift
+                ;;
+            --)
+                shift
+                break
+                ;;
+        esac
+    done
+
+    case $mode in
+        up)
+            for host in "$@"
+            do
+                printf 'check: %s\t.' "$host"
+                while ! check_ping "$host"
+                do
+                    printf '.'
+                    sleep 1
+                done
+                printf ' up\n'
+            done
+            ;;
+        down)
+            for host in "$@"
+            do
+                printf 'check: %s\t.' "$host"
+                while check_ping "$host"
+                do
+                    printf '.'
+                    sleep 1
+                done
+                printf ' down\n'
+            done
+            ;;
+    esac
+}
+
+main "$@"
