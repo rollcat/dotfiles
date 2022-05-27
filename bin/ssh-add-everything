@@ -1,0 +1,10 @@
+#!/bin/sh
+set -eu
+case "$(uname)" in
+    Darwin)
+        ssh-add --apple-use-keychain
+        ;;
+    *)
+        ssh-add
+        ;;
+esac
