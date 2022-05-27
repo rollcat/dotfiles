@@ -1,0 +1,14 @@
+#!/usr/bin/env python3
+# Unsort (shuffle) lines of input.
+import random
+import sys
+
+
+def main():
+    lines = list(sys.stdin.readlines())
+    random.shuffle(lines)
+    sys.stdout.writelines(lines)
+
+
+if __name__ == "__main__":
+    main()

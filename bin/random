@@ -1,0 +1,20 @@
+#!/usr/bin/env python3
+# Produce random numbers, one per line, until stopped.
+# Range is 0..65535 (both inclusive).
+# The numbers are **not** guaranteed to be cryptographically secure.
+import random
+import sys
+
+
+def main():
+    stdout = sys.stdout.buffer.raw
+    try:
+        while True:
+            stdout.write(b"%d\n" % (random.randint(0, 65535)))
+    except (BrokenPipeError, KeyboardInterrupt):
+        pass
+    return
+
+
+if __name__ == "__main__":
+    main()
