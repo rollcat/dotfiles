@@ -1,0 +1,6 @@
+#!/bin/sh
+# https://plan.cat/
+user=rollcat
+T=`mktemp` && curl -so $T https://plan.cat/~${user} && \
+	$EDITOR $T && \
+	curl -su ${user} -F "plan=<$T" https://plan.cat/stdin
