@@ -96,6 +96,9 @@ export PKG_CONFIG_PATH=~/.local/lib/pkgconfig
 export PYTHONSTARTUP=~/.pythonrc.py
 # NOTE: GOPATH and PYENV_ROOT belong here, but we also need them for $PATH
 
+# https://drewdevault.com/2021/08/06/goproxy-breaks-go.html
+export GOPROXY=direct
+
 # Docker
 export DOCKER_BUILDKIT=1
 export COMPOSE_DOCKER_CLI_BUILD=1
