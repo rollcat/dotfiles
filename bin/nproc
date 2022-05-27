@@ -1,0 +1,22 @@
+#!/bin/sh
+set -eu
+# Simple estimation of nproc, for systems that don't have the command.
+
+case $(uname) in
+    Darwin)
+        exec sysctl -n hw.ncpu
+        ;;
+    OpenBSD)
+        exec sysctl -n hw.ncpuonline
+        ;;
+    *)
+        # Linux
+        if [ -r /proc/cpuinfo ]
+        then
+            grep -c '^processor' /proc/cpuinfo
+        else
+            echo 1
+        fi
+        exit
+        ;;
+esac
