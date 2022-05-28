@@ -8,9 +8,6 @@ if [[ $TERM == "dumb" ]]; then
     return
 fi
 
-# Source .profile, which has things common to all shells.
-. ~/.profile
-
 # Use emacs keybindings even if our EDITOR is set to vi
 bindkey -e
 
