@@ -1,12 +1,19 @@
 #!/usr/bin/env python3
 # Unsort (shuffle) lines of input.
+# You can use --seed=<some-string> to set a seed.
 import random
 import sys
+import getopt
 
 
 def main():
+    r = random.Random()
+    opts, args = getopt.getopt(sys.argv[1:], "", ["seed="])
+    for opt, value in opts:
+        if opt == "--seed":
+            r.seed(value)
     lines = list(sys.stdin.readlines())
-    random.shuffle(lines)
+    r.shuffle(lines)
     sys.stdout.writelines(lines)
 
 
