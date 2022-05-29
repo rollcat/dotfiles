@@ -70,7 +70,7 @@ then
 fi
 
 if has syncthing
-then syncthing &
+then syncthing --no-browser &
 fi
 
 # Firefox
