@@ -92,3 +92,16 @@ URxvt.on2Clicks              : word
 URxvt.on3Clicks              : line
 URxvt.iso14755: disabled
 URxvt.iso14755_52: disabled
+
+! ===== xterm
+XTerm.font: -*-terminus-medium-*-*-*-16-*-*-*-*-*-*-u
+XTerm.termName: xterm-256color
+XTerm.vt100.metaSendsEscape: true
+XTerm.vt100.saveLines: 10000
+XTerm.vt100.scrollBar: false
+XTerm.vt100.translations: #override \n\
+Ctrl Shift <Key>C: copy-selection(CLIPBOARD) \n\
+Ctrl Shift <Key>V: insert-selection(CLIPBOARD) \n\
+Mod4 <Key>C: copy-selection(CLIPBOARD) \n\
+Mod4 <Key>V: insert-selection(CLIPBOARD) \n\
+Mod4 <Key>E: alt-sends-escape()
