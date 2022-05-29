@@ -1,0 +1,14 @@
+#!/bin/sh
+set -eu
+
+if [ -d ~/Pictures/Wallpapers ]
+then
+    find ~/Pictures/Wallpapers -type f -a \
+         \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" \) \
+        | unsort --seed="$(date +%Y%m%d)" \
+        | head -1 \
+        | xargs xwallpaper --zoom
+elif [ -x /usr/local/bin/openbsd-wallpaper ]
+then /usr/local/bin/openbsd-wallpaper
+else xsetroot -solid black
+fi

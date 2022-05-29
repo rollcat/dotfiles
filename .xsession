@@ -17,10 +17,7 @@ if [ -r ~/.Xresources ]
 then xrdb -merge ~/.Xresources
 fi
 
-if [ -x /usr/local/bin/openbsd-wallpaper ]
-then /usr/local/bin/openbsd-wallpaper
-else xsetroot -solid black
-fi
+~/bin/set-wallpaper
 
 # Turn off audible bell
 xset -b
