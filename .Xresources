@@ -6,40 +6,25 @@ Xft.antialias : 1
 Xft.rgba      : rgb
 
 ! ===== colors
-! Solarized color scheme for the X Window System
-!
-! http://ethanschoonover.com/solarized
 ! Common
-#define S_yellow        #b58900
-#define S_orange        #cb4b16
-#define S_red           #dc322f
-#define S_magenta       #d33682
-#define S_violet        #6c71c4
-#define S_blue          #268bd2
-#define S_cyan          #2aa198
-#define S_green         #859900
+#define S_yellow        #F0DFAF
+#define S_orange        #DFAF8F
+#define S_red           #CC9393
+#define S_magenta       #DC8CC3
+#define S_violet        #bbb0cb
+#define S_blue          #8CD0D3
+#define S_cyan          #93E0E3
+#define S_green         #7F9F7F
 ! Dark
-#define S_base03        #002b36
-#define S_base02        #073642
-#define S_base01        #586e75
-#define S_base00        #657b83
-#define S_base0         #839496
-#define S_base1         #93a1a1
-#define S_base2         #eee8d5
-#define S_base3         #fdf6e3
-! Light
-! #define S_base03        #fdf6e3
-! #define S_base02        #eee8d5
-! #define S_base01        #93a1a1
-! #define S_base00        #839496
-! #define S_base0         #657b83
-! #define S_base1         #586e75
-! #define S_base2         #073642
-! #define S_base3         #002b36
-!
-! To only apply colors to your terminal, for example, prefix
-! the color assignment statement with its name. Example:
-! URxvt*background:            S_base03
+#define S_base03        #3F3F3F
+#define S_base02        #4F4F4F
+#define S_base01        #878777
+#define S_base00        #6F6F6F
+#define S_base0         #DCDCCC
+#define S_base1         #FFFFEF
+#define S_base2         #FFFFF6
+#define S_base3         #FFFFFD
+! Light: TODO
 *background:              S_base03
 *foreground:              S_base0
 *fading:                  40
@@ -78,7 +63,7 @@ XLock.username    : username:
 XLock.password    : password: 
 
 ! ===== urxvt
-URxvt.font                   : -*-terminus-*-*-*-*-16-*-*-*-*-*-*-u
+URxvt.font                   : -*-terminus-medium-*-*-*-16-*-*-*-*-*-*-u
 URxvt.borderWidth            : 0
 URxvt.internalBorder         : 0
 URxvt.termName               : xterm-256color
