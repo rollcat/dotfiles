@@ -33,11 +33,14 @@
   (defun font-exists-p (name)
     (if (find-font (font-spec :name name)) t nil))
   (require 'seq)
-  (let ((font (seq-find 'font-exists-p '("Inconsolata 22" "Terminus 12"))))
+  (let ((font (seq-find 'font-exists-p '("Inconsolata 18" "Terminus 12"))))
     (when font
       (add-to-list 'default-frame-alist `(font . ,font))
       (set-face-attribute 'default t :font font)
-      (set-frame-font font))))
+      (set-frame-font font)))
+  (setq-default cursor-type 'bar)
+  (global-display-line-numbers-mode)
+  nil)
 
 (progn
   ;; Store local customized variables in a separate file.
@@ -102,6 +105,9 @@
  kept-new-versions 6
  kept-old-versions 2
  version-control t)
+
+;; Column marker
+(global-display-fill-column-indicator-mode)
 
 ;; Make it easier to discover key shortcuts
 
@@ -251,7 +257,14 @@ end tell
   :config
   (editorconfig-mode 1))
 
-(cua-selection-mode 1)
+(progn ;; CUA fixes
+  (cua-selection-mode 1)
+  ;; disable misc mod+click menus
+  (global-unset-key (kbd "<C-down-mouse-1>"))  ;; buffer menu
+  (global-unset-key (kbd "<C-down-mouse-2>"))  ;; text menu
+  (global-unset-key (kbd "<C-down-mouse-3>"))  ;; edit menu
+  (global-unset-key (kbd "<S-down-mouse-1>"))  ;; font menu
+  nil)
 
 ;; This default confuses lots of other software.
 (setq create-lockfiles nil)
@@ -365,6 +378,7 @@ end tell
   ;; misc
   (global-set-key (kbd "s-q") 'save-buffers-kill-emacs)
   (global-set-key (kbd "s-W") 'delete-frame)
+  (global-set-key (kbd "s-N") 'make-frame-command)
   (global-set-key (kbd "s-o") 'find-file)
   (global-set-key (kbd "s-e") 'mac-switch-meta)
   (global-set-key (kbd "s-a") 'mark-whole-buffer)
@@ -392,6 +406,8 @@ end tell
 
   ;; disable annoying keys
   (global-unset-key (kbd "C-z"))
+  (global-unset-key (kbd "C-<wheel-down>"))
+  (global-unset-key (kbd "C-<wheel-up>"))
 
   (progn ;; ivy, swiper, counsel
     (global-set-key (kbd "C-s") 'swiper-isearch)
