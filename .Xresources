@@ -51,14 +51,16 @@ Xft.rgba      : rgb
 
 ! ===== xlock
 ! actually turn the backlight off
-XLock.dpmsoff     : 1
+XLock.startCmd    : doas -L
+XLock.dpmsoff     : 10
+XLock.lockdelay   : 10
 ! plain white-on-black lock screen
 XLock.description : off
 XLock.echokeys    : off
 XLock.info        :
 XLock.background  : black
 XLock.foreground  : white
-XLock.mode        : blank
+XLock.mode        : random
 XLock.username    : username: 
 XLock.password    : password: 
 

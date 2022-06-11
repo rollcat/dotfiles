@@ -63,10 +63,7 @@ if [ -x /usr/local/bin/dbus-launch -a -z "${DBUS_SESSION_BUS_ADDRESS}" ]; then
 fi
 
 if has xidle && has xlock
-then
-    xidle \
-        -timeout 600 \
-        -program "xlock -mode blank -lockdelay 10 -timeelapsed" &
+then xidle -timeout 600 -program "$(which xlock)" &
 fi
 
 if has syncthing
