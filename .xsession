@@ -66,10 +66,6 @@ if has xidle && has xlock
 then xidle -timeout 600 -program "$(which xlock)" &
 fi
 
-if has syncthing
-then syncthing --no-browser &
-fi
-
 # Firefox
 export MOZ_ACCELERATED=1
 export MOZ_WEBRENDER=1
