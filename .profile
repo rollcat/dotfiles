@@ -66,15 +66,19 @@ case "$0" in
         ;;
 esac
 
-# urxvt's termcap may be unavailable on this system
-case $TERM in
+# our termcap may be unavailable on this system - choose a safer bet
+if ! infocmp >/dev/null
+then case $TERM in
     rxvt-unicode-256color)
         export TERM=xterm-256color
         ;;
     rxvt*)
         export TERM=xterm
         ;;
-esac
+    *)
+        export TERM=xterm
+        ;;
+esac; fi
 
 # Mail, notifications
 export MAILCHECK=0
