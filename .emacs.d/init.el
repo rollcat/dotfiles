@@ -456,8 +456,9 @@ end tell
 
 (use-package dumb-jump
   :config
-  (global-set-key (kbd "C-.") 'dumb-jump-go)
-  (global-set-key (kbd "C-,") 'dumb-jump-back)
+  (global-set-key (kbd "C-.") 'xref-find-definitions)
+  (global-set-key (kbd "C-,") 'xref-pop-marker-stack)
+  (add-hook 'xref-backend-functions #'dumb-jump-xref-activate)
   nil)
 
 (progn ;; dired
