@@ -36,8 +36,11 @@
   (let ((font (seq-find 'font-exists-p '("Inconsolata 18" "Terminus 12"))))
     (when font
       (add-to-list 'default-frame-alist `(font . ,font))
-      (set-face-attribute 'default t :font font)
-      (set-frame-font font)))
+      (set-face-attribute 'default nil :font font)
+      (set-face-attribute 'fixed-pitch nil :font font)
+      (set-face-attribute 'fixed-pitch-serif nil :font font)
+      (set-frame-font font)
+      nil))
   (setq-default cursor-type 'bar)
   (global-display-line-numbers-mode)
   nil)
