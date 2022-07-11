@@ -32,10 +32,10 @@ then
     # load_extension nocolor
     if [ "$_os" = "OpenBSD" ]; then
         load_extension openbsd
+        load_completion rc
     fi
     load_completion ssh
     load_completion vmd
-    load_completion rc
     # load_completion gopass
     load_completion git
     # load_completion man  # slow
