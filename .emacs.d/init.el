@@ -139,12 +139,11 @@
 
 ;; Theme
 (progn
-  (setq preferred-dark-theme nil)
-  (setq preferred-light-theme nil)
-  (use-package solarized-theme
-    :config
-    (setq preferred-dark-theme 'solarized-zenburn)
-    (setq preferred-light-theme 'solarized-light-high-contrast))
+  (add-to-list 'load-path "~/.emacs.d/themes")
+  (require 'rollcat-mono-light-theme)
+  (require 'rollcat-mono-dark-theme)
+  (setq preferred-light-theme 'rollcat-mono-light)
+  (setq preferred-dark-theme 'rollcat-mono-dark)
 
   (defun get-appearance-preferences ()
     (if system-is-mac
