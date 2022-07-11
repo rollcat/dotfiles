@@ -113,6 +113,7 @@
 
 ;; Column marker
 (global-display-fill-column-indicator-mode)
+(setq fill-column 88)
 
 ;; Make it easier to discover key shortcuts
 
