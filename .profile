@@ -149,7 +149,7 @@ p=$(which mg kak vim vi nano 2>/dev/null | head -1)
 [[ -n $p ]] && export EDITOR=$p VISUAL=$p
 p=$(which firefox chromium chrome surf2 surf dillo x-www-browser 2>/dev/null | head -1)
 [[ -n $p ]] && export BROWSER=$p
-p=$(which i3 dwm awesome cwm x-window-manager xterm 2>/dev/null | head -1)
+p=$(which quartz-wm i3 dwm awesome cwm x-window-manager xterm 2>/dev/null | head -1)
 [[ -n $p ]] && export WM=$p
 unset p
 
