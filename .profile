@@ -126,6 +126,8 @@ then
     eval "$(gdircolors -b)"
     alias ls='gls --color=auto'
 fi
+# jq: null false true numbers strings arrays objects
+JQ_COLORS="0;39:0;39:0;39:0;39:0;32:0;39:0;39"
 
 if grep --version 2>&1 | grep -q GNU
 then
