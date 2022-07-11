@@ -262,6 +262,8 @@ end tell
   :config
   (editorconfig-mode 1))
 
+(use-package markdown-mode)
+
 (progn ;; CUA fixes
   (cua-selection-mode 1)
   ;; disable misc mod+click menus
