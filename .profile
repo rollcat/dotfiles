@@ -58,7 +58,7 @@ export PATH=$(_mkpath | tr '\n' :)
 
 # Shell-specific configurations
 case "$0" in
-    -ksh)
+    -ksh|oksh)
         export ENV=$HOME/.kshrc
         ;;
     mksh)
