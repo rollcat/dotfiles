@@ -129,6 +129,9 @@ fi
 # jq: null false true numbers strings arrays objects
 JQ_COLORS="0;39:0;39:0;39:0;39:0;32:0;39:0;39"
 
+# mosh
+export MOSH_ESCAPE_KEY='~'
+
 if grep --version 2>&1 | grep -q GNU
 then
     alias grep='grep --color=auto'
