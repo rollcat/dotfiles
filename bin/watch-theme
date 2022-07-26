@@ -1,0 +1,5 @@
+#!/bin/sh
+set -eu
+# brew install cormacrelf/tap/dark-notify
+export PATH=/opt/homebrew/bin:/usr/local/bin:$HOME/bin:$PATH
+exec dark-notify -c update-theme

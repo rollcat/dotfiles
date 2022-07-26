@@ -161,10 +161,10 @@ end tell
       "dark"
       ))
 
-  (defun update-theme ()
+  (defun update-theme (&optional ap)
     (interactive)
     (mapcar #'disable-theme custom-enabled-themes)
-    (let* ((ap (get-appearance-preferences))
+    (let* ((ap (or ap (get-appearance-preferences)))
            (preferred-theme
             (cond
              ((equal ap "dark")  preferred-dark-theme)

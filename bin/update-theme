@@ -1,0 +1,25 @@
+#!/bin/sh
+set -eu
+case "${1:-$(dark-notify -e)}" in
+    light)
+        terminal_theme=rollcat-light
+        emacs_theme=light
+        ;;
+    dark)
+        terminal_theme=rollcat-dark
+        emacs_theme=dark
+        ;;
+    *)
+        terminal_theme=rollcat-dark
+        emacs_theme=dark
+        ;;
+esac
+emacsclient -e "(update-theme \"${emacs_theme}\")" || true
+osascript <<EOF
+tell application "Terminal"
+    set default settings to settings set "${terminal_theme}"
+end tell
+tell application "Terminal"
+    set current settings of tabs of windows to settings set "${terminal_theme}"
+end tell
+EOF
