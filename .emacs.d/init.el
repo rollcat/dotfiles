@@ -230,6 +230,7 @@ end tell
 (use-package typescript-mode)
 (use-package terraform-mode)
 (use-package yaml-mode)
+(use-package nginx-mode)
 
 (use-package lua-mode)
 (use-package go-mode)
@@ -263,6 +264,7 @@ end tell
   (editorconfig-mode 1))
 
 (use-package markdown-mode)
+(use-package applescript-mode)
 
 (progn ;; CUA fixes
   (cua-selection-mode 1)
