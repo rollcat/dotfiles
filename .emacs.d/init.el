@@ -403,6 +403,7 @@ end tell
   (global-set-key (kbd "s-s") 'save-buffer)
   (global-set-key (kbd "C-<tab>") 'next-buffer)
   (global-set-key (kbd "C-S-<tab>") 'previous-buffer)
+  (global-set-key (kbd "C-<iso-lefttab>") 'previous-buffer)
   (global-set-key (kbd "M-<tab>") 'other-frame)
 
   ;; more custom mac stuff
