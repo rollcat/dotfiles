@@ -162,6 +162,11 @@ alias py=python3
 alias ipy='python3 -m IPython'
 alias tf=terraform
 
+# Common tools with uncommon names
+if has gnuwatch
+then alias watch=gnuwatch
+fi
+
 # Change to a directory, and activate a virtualenv, if present
 cde() {
     cd $1
