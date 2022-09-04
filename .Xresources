@@ -1,88 +1,108 @@
 ! ===== fonts
-Xft.autohint  : 0
-Xft.hintstyle : hintslight
-Xft.hinting   : 1
-Xft.antialias : 1
-Xft.rgba      : rgb
+! Xft.dpi: Thinkpad X230 (1366x768; 12.5 inch) = 125
+Xft.dpi: 125
+Xft.autohint: 0
+Xft.hintstyle: hintfull
+Xft.hinting: 1
+Xft.antialias: 1
+Xft.rgba: none
 
 ! ===== colors
 ! Common
-#define S_yellow        #F0DFAF
-#define S_orange        #DFAF8F
-#define S_red           #CC9393
-#define S_magenta       #DC8CC3
-#define S_violet        #bbb0cb
-#define S_blue          #8CD0D3
-#define S_cyan          #93E0E3
-#define S_green         #7F9F7F
+#define S_yellow   #F0DFAF
+#define S_orange   #DFAF8F
+#define S_red      #CC9393
+#define S_magenta  #DC8CC3
+#define S_violet   #bbb0cb
+#define S_blue     #8CD0D3
+#define S_cyan     #93E0E3
+#define S_green    #7F9F7F
 ! Dark
-#define S_base03        #3F3F3F
-#define S_base02        #4F4F4F
-#define S_base01        #878777
-#define S_base00        #6F6F6F
-#define S_base0         #DCDCCC
-#define S_base1         #FFFFEF
-#define S_base2         #FFFFF6
-#define S_base3         #FFFFFD
+#define S_base03   #3F3F3F
+#define S_base02   #4F4F4F
+#define S_base01   #878777
+#define S_base00   #6F6F6F
+#define S_base0    #DCDCCC
+#define S_base1    #FFFFEF
+#define S_base2    #FFFFF6
+#define S_base3    #FFFFFD
 ! Light: TODO
-*background:              S_base03
-*foreground:              S_base0
-*fading:                  40
-*fadeColor:               S_base03
-*cursorColor:             S_base1
-*pointerColorBackground:  S_base01
-*pointerColorForeground:  S_base1
-*color0:                  S_base02
-*color1:                  S_red
-*color2:                  S_green
-*color3:                  S_yellow
-*color4:                  S_blue
-*color5:                  S_magenta
-*color6:                  S_cyan
-*color7:                  S_base2
-*color9:                  S_orange
-*color8:                  S_base03
-*color10:                 S_base01
-*color11:                 S_base00
-*color12:                 S_base0
-*color13:                 S_violet
-*color14:                 S_base1
-*color15:                 S_base3
+*background: S_base03
+*foreground: S_base0
+*fading: 40
+*fadeColor: S_base03
+*cursorColor: S_base1
+*pointerColorBackground: S_base01
+*pointerColorForeground: S_base1
+*color0: S_base02
+*color1: S_red
+*color2: S_green
+*color3: S_yellow
+*color4: S_blue
+*color5: S_magenta
+*color6: S_cyan
+*color7: S_base2
+*color9: S_orange
+*color8: S_base03
+*color10: S_base01
+*color11: S_base00
+*color12: S_base0
+*color13: S_violet
+*color14: S_base1
+*color15: S_base3
 
 ! ===== xlock
-! actually turn the backlight off
-XLock.startCmd    : doas -L
-XLock.dpmsoff     : 10
-XLock.lockdelay   : 10
-! plain white-on-black lock screen
-XLock.description : off
-XLock.echokeys    : off
-XLock.info        :
-XLock.background  : black
-XLock.foreground  : white
-XLock.mode        : random
-XLock.username    : username: 
-XLock.password    : password: 
+XLock.startCmd: doas -L
+XLock.dpmsoff: 10
+XLock.lockdelay: 10
+XLock.description: on
+XLock.echokeys: on
+XLock.info:
+XLock.background: black
+XLock.foreground: white
+XLock.mode: blank
+XLock.username: username:
+XLock.password: password:
 
 ! ===== urxvt
-URxvt.font                   : -*-terminus-medium-*-*-*-16-*-*-*-*-*-*-u
-URxvt.borderWidth            : 0
-URxvt.internalBorder         : 0
-URxvt.termName               : xterm-256color
-URxvt.saveLines              : 10240
-URxvt.scrollBar              : false
-URxvt..bellIsUrgent          : true
-URxvt.allowBoldFonts         : false
+URxvt.font: -*-terminus-medium-*-*-*-16-*-*-*-*-*-*-u
+URxvt.fading: 0
+URxvt.borderWidth: 2
+URxvt.internalBorder: 4
+URxvt.termName: xterm-256color
+URxvt.saveLines: 10240
+URxvt.scrollBar: false
+! rxvt, plain, next, xterm
+URxvt.scrollStyle: plain
+URxvt.thickness: 14
+URxvt.bellIsUrgent: true
+URxvt.allowBoldFonts: true
+URxvt.loginShell: true
+URxvt.utmpInhibit: false
 ! pressing a key scrolls to the bottom
-URxvt.scrollKey              : true
-URxvt.on2Clicks              : word
-URxvt.on3Clicks              : line
+URxvt.scrollKey: true
+URxvt.on2Clicks: word
+URxvt.on3Clicks: line
 URxvt.iso14755: disabled
 URxvt.iso14755_52: disabled
+! alt is meta
+URxvt.modifier: alt
+URxvt.hold: false
+URxvt.clipboard.autocopy: true
+URxvt.keysym.4-c: perl:clipboard-osc:copy
+URxvt.keysym.4-v: perl:clipboard-osc:paste
+URxvt.perl-ext-common: default,clipboard-osc
+! URxvt.tabbed.tabbar-fg: 2
+! URxvt.tabbed.tabbar-bg: 0
+! URxvt.tabbed.tab-fg: 3
+! URxvt.tabbed.tab-bg: 0
+URxvt.skipBuiltinGlyphs: true
 
 ! ===== xterm
 XTerm.font: -*-terminus-medium-*-*-*-16-*-*-*-*-*-*-u
 XTerm.termName: xterm-256color
+XTerm.hold: false
+XTerm.reportFonts: true
 XTerm.vt100.metaSendsEscape: true
 XTerm.vt100.saveLines: 10000
 XTerm.vt100.scrollBar: false
