@@ -29,3 +29,12 @@
 	required = true
 [init]
 	defaultBranch = master
+
+# Sign commits with SSH key
+[commit]
+	gpgsign = true
+[gpg]
+	format = ssh
+[gpg "ssh"]
+	defaultKeyCommand = ssh-add -L
+	allowedSignersFile = ~/.ssh/allowed_signers
