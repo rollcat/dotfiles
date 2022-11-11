@@ -3,7 +3,7 @@
 <plist version="1.0">
   <dict>
     <key>Label</key>
-    <string>at.rollc.at.watch-theme.plist</string>
+    <string>local.watch-theme.plist</string>
     <key>ProgramArguments</key>
     <array>
       <string>/Users/kamil/bin/watch-theme</string>
