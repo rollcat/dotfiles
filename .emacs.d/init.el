@@ -231,6 +231,7 @@ end tell
 (use-package terraform-mode)
 (use-package yaml-mode)
 (use-package nginx-mode)
+(use-package nix-mode)
 
 (use-package lua-mode)
 (use-package go-mode)

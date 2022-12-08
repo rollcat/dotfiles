@@ -23,6 +23,7 @@ _mkpath() {
     echo ~/.local/bin
     echo ~/.cargo/bin
     echo ~/.poetry/bin
+    echo ~/.nix-profile/bin
 
     export GOPATH=~/go
     echo $GOPATH/bin
@@ -41,6 +42,15 @@ _mkpath() {
 
     if [ -d /Applications ]
     then find /Applications -type d -name bin -maxdepth 3
+    fi
+
+    # NixOS
+    if [ -d /nix ]
+    then
+        echo /run/wrappers/bin
+        echo /etc/profiles/per-user/$(id -un)/bin
+        echo /nix/var/nix/profiles/default/bin
+        echo /run/current-system/sw/bin
     fi
 
     echo /opt/homebrew/bin

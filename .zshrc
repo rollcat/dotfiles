@@ -65,7 +65,7 @@ precmd() {
     default_termtitle
     # send a bell to mark window urgent
     echo -n '\a'
-    PS1="$(prompt)"
+    PS1="$(command prompt)"
 }
 preexec() {
     termtitle "$2"
