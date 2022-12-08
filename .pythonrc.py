@@ -26,6 +26,7 @@ import tempfile
 import time
 import types
 import typing as t
+import unicodedata
 import urllib
 import uuid
 
