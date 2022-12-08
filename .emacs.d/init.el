@@ -142,12 +142,17 @@
   (add-to-list 'load-path "~/.emacs.d/themes")
   (require 'rollcat-mono-light-theme)
   (require 'rollcat-mono-dark-theme)
+  (require 'rollcat-base-theme)
   (setq preferred-light-theme 'rollcat-mono-light)
   (setq preferred-dark-theme 'rollcat-mono-dark)
+  (setq preferred-appearance nil)
 
   (defun get-appearance-preferences ()
-    (if system-is-mac
-        (do-applescript "
+    (cond
+     ;; we have a strict preference
+     ((not (null preferred-appearance)) preferred-appearance)
+     ;; on macOS, we can ask the system
+     (system-is-mac (do-applescript "
 tell application \"System Events\"
   tell appearance preferences
     if (dark mode) then
@@ -157,20 +162,18 @@ tell application \"System Events\"
     end if
   end tell
 end tell
-")
-      "dark"
-      ))
+"))
+     ;; no other preference is indicated
+     (t nil)))
 
   (defun update-theme (&optional ap)
     (interactive)
     (mapcar #'disable-theme custom-enabled-themes)
-    (let* ((ap (or ap (get-appearance-preferences)))
-           (preferred-theme
-            (cond
-             ((equal ap "dark")  preferred-dark-theme)
-             ((equal ap "light") preferred-light-theme)
-             (t nil))))
-      (when preferred-theme (load-theme preferred-theme t))))
+    (load-theme 'rollcat-base t)
+    (let* ((ap (or ap (get-appearance-preferences))))
+      (cond
+       ((equal ap "dark")  (load-theme preferred-dark-theme t))
+       ((equal ap "light") (load-theme preferred-light-theme t)))))
 
   (custom-set-faces
    '(dired-subtree-depth-1-face ((t nil)))
