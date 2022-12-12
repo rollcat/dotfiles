@@ -299,20 +299,15 @@ hs.hotkey.bind({"alt", "cmd"}, "Down", function()
       win:setFrame(move.down(win:screen():frame(), win:frame()))
 end)
 
-hs.hotkey.bind({"cmd", "ctrl"}, "1", function() hs.osascript.applescript([[
-tell application "Finder"
-    activate
-end tell
-]]) end)
-
-hs.hotkey.bind({"cmd", "ctrl"}, "2", function() hs.osascript.applescript([[
-tell application "Safari"
-   activate
-end tell
-]]) end)
-
-hs.hotkey.bind({"cmd", "ctrl"}, "3", function() hs.osascript.applescript([[
-tell application "Terminal"
-      activate
-end tell
-]]) end)
+for i = 1, 9 do
+  local cmd = string.format([[
+    tell application "System Events"
+      tell process "Dock"
+        set frontmost to true
+        activate
+        click UI element %d of list 1
+      end tell
+    end tell
+  ]], i)
+  hs.hotkey.bind({"cmd", "ctrl"}, "" .. i, function() hs.osascript.applescript(cmd) end)
+end
