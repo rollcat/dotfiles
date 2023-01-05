@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"os/user"
+	"path"
 	"strings"
 )
 
@@ -35,6 +36,14 @@ func (c Color) ansi() string {
 	default:
 		return ""
 	}
+}
+
+func pythonVirtualEnv() string {
+	venv := path.Base(path.Dir(path.Clean(os.Getenv("VIRTUAL_ENV"))))
+	if venv == "." {
+		return ""
+	}
+	return venv
 }
 
 func main() {
@@ -69,14 +78,19 @@ func main() {
 	if os.Getenv("SSH_CLIENT") != "" {
 		hostColor = "red"
 	}
+	venv := pythonVirtualEnv()
+	if venv != "" {
+		venv = fmt.Sprintf("[venv=%s] ", venv)
+	}
 	fmt.Printf(
-		": %s%s%s@%s%s%s %s\n%s ",
+		": %s%s%s@%s%s%s %s%s\n%s ",
 		userColor.ansi(),
 		u.Username,
 		reset.ansi(),
 		hostColor.ansi(),
 		host,
 		reset.ansi(),
+		venv,
 		cwd,
 		prompt,
 	)

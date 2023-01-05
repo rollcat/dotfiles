@@ -177,8 +177,26 @@ if has gnuwatch
 then alias watch=gnuwatch
 fi
 
+# Python virtualenvs
+mkvenv() {
+    target=$(realpath ${1:-.})
+    if ! [ -d "${target}/.venv" ]
+    then
+        ${PYTHON:-python3} \
+            -m venv \
+            --prompt ${PROJECT:-$(basename "${target}")} \
+            "${target}/.venv"
+    fi
+}
 # Change to a directory, and activate a virtualenv, if present
 cde() {
-    cd $1
-    test -f ./.venv/bin/activate && . ./.venv/bin/activate
+    command cd $1
+    if [ -f ./.venv/bin/activate ]
+    then
+        . ./.venv/bin/activate
+        which python3
+        python3 --version
+    else
+        echo >&2 "E: no ./.venv/bin/activate"
+    fi
 }
