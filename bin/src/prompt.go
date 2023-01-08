@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
 	"os"
 	"os/user"
 	"path"
@@ -16,10 +17,18 @@ var userColor = Color("green")
 var hostColor = Color("green")
 var reset = Color("reset")
 
-func rescue() {
-	// Do something useful when encountering an unrecoverable error
-	fmt.Printf("%s ", prompt)
-	os.Exit(0)
+var cwd = "."
+var u *user.User = nil
+var gitRoot = ""
+
+func init() {
+	var err error
+	u, err = user.Current()
+	if err != nil {
+		u = &user.User{Username: "?", HomeDir: ""}
+	}
+	cwd, err = os.Getwd()
+	gitRoot = getGitRoot()
 }
 
 func (c Color) ansi() string {
@@ -38,12 +47,47 @@ func (c Color) ansi() string {
 	}
 }
 
+func abbrevHome(s string) string {
+	if strings.HasPrefix(s, u.HomeDir) {
+		s = "~" + strings.TrimPrefix(s, u.HomeDir)
+	}
+	return s
+}
+
 func pythonVirtualEnv() string {
 	venv := path.Base(path.Dir(path.Clean(os.Getenv("VIRTUAL_ENV"))))
 	if venv == "." {
 		return ""
 	}
 	return venv
+}
+
+func getGitRoot() string {
+	r := cwd
+	for r != "/" && r != "." {
+		_, err := os.Stat(path.Join(r, ".git"))
+		if err == nil {
+			return r
+		}
+		r = path.Dir(r)
+	}
+	return ""
+}
+
+func gitBranch() string {
+	if gitRoot == "" {
+		return ""
+	}
+	data, err := ioutil.ReadFile(path.Join(gitRoot, ".git/HEAD"))
+	if err != nil {
+		return ""
+	}
+	s := string(data)
+	s = strings.TrimSuffix(s, "\n")
+	if strings.HasPrefix(s, "ref: refs/heads/") {
+		s = strings.TrimPrefix(s, "ref: refs/heads/")
+	}
+	return s
 }
 
 func main() {
@@ -59,21 +103,9 @@ func main() {
 		// TODO: isatty(3)? termcap?
 		rich = true
 	}
-	cwd, err := os.Getwd()
-	if err != nil {
-		rescue()
-	}
 	host, err := os.Hostname()
 	if err != nil {
-		rescue()
-	}
-	u, err := user.Current()
-	if err != nil {
-		rescue()
-	}
-	home := u.HomeDir
-	if strings.HasPrefix(cwd, home) {
-		cwd = "~" + cwd[len(home):]
+		host = "?"
 	}
 	if os.Getenv("SSH_CLIENT") != "" {
 		hostColor = "red"
@@ -82,16 +114,22 @@ func main() {
 	if venv != "" {
 		venv = fmt.Sprintf("[venv=%s] ", venv)
 	}
+	gitb := gitBranch()
+	if gitb != "" {
+		gitb = fmt.Sprintf("[git=%s] ", gitb)
+	}
+
 	fmt.Printf(
-		": %s%s%s@%s%s%s %s%s\n%s ",
+		": %s%s%s@%s%s%s %s%s%s\n%s ",
 		userColor.ansi(),
 		u.Username,
 		reset.ansi(),
 		hostColor.ansi(),
 		host,
 		reset.ansi(),
+		gitb,
 		venv,
-		cwd,
+		abbrevHome(cwd),
 		prompt,
 	)
 }
