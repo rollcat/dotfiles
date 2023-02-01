@@ -9,6 +9,7 @@
 [pull]
 	# When pulling, rebase instead of merging
 	rebase = true
+        ff = true
 
 [push]
 	default = current
