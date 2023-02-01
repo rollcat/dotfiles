@@ -1,6 +1,6 @@
 #!/bin/sh
 set -eu
-hash echo git sed
+hash echo git sed cut tr
 
 # git@github.com:user/some-repo.git     -> github.com/user/some-repo
 # git@github.com:user/some.repo.git     -> github.com/user/some.repo
@@ -35,8 +35,9 @@ main() {
     then
         cd "$dest_dir"
         git fetch -a
+        git submodule update --init --recursive
     else
-        git clone "$url" "$dest_dir"
+        git clone --recursive "$url" "$dest_dir"
     fi
 }
 
