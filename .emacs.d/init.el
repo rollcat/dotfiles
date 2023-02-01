@@ -81,6 +81,12 @@
 (unless package-archive-contents
   (package-refresh-contents))
 
+(setq package-pinned-packages
+      '(
+        (magit . "melpa-stable")
+        (python-mode . "melpa-stable")
+        ))
+
 ;; Use-package for civilized configuration
 (unless (package-installed-p 'use-package)
   (package-install 'use-package))
@@ -260,7 +266,7 @@ end tell
   nil)
 
 (require 'info)
-(require 'python)
+(use-package python-mode)
 (use-package pip-requirements)
 
 (use-package editorconfig
