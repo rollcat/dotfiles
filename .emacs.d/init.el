@@ -275,6 +275,7 @@ end tell
 
 (use-package markdown-mode)
 (use-package applescript-mode)
+(use-package elixir-mode)
 
 (progn ;; CUA fixes
   (cua-selection-mode 1)
