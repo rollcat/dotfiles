@@ -190,7 +190,7 @@ mkvenv() {
 }
 # Change to a directory, and activate a virtualenv, if present
 cde() {
-    command cd $1
+    cd $1
     if [ -f ./.venv/bin/activate ]
     then
         . ./.venv/bin/activate
