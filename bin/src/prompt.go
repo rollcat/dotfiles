@@ -90,6 +90,10 @@ func gitBranch() string {
 	return s
 }
 
+func nixShell() string {
+	return os.Getenv("IN_NIX_SHELL")
+}
+
 func main() {
 	var isRoot = os.Getuid() == 0
 	if len(os.Args) >= 2 {
@@ -118,9 +122,13 @@ func main() {
 	if gitb != "" {
 		gitb = fmt.Sprintf("[git=%s] ", gitb)
 	}
+	nix := nixShell()
+	if nix != "" {
+		nix = fmt.Sprintf("[nix=%s] ", nix)
+	}
 
 	fmt.Printf(
-		": %s%s%s@%s%s%s %s%s%s\n%s ",
+		": %s%s%s@%s%s%s %s%s%s%s\n%s ",
 		userColor.ansi(),
 		u.Username,
 		reset.ansi(),
@@ -128,6 +136,7 @@ func main() {
 		host,
 		reset.ansi(),
 		gitb,
+		nix,
 		venv,
 		abbrevHome(cwd),
 		prompt,
