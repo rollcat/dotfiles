@@ -1,14 +1,4 @@
 #!/bin/sh
-### Some login shells (like ksh) need $ENV to read their .*rc
-case "$(getent passwd $(id -un) | cut -d: -f7)" in
-    */ksh)
-        export ENV=$HOME/.kshrc
-        ;;
-    */mksh)
-        export ENV=$HOME/.mkshrc
-        ;;
-esac
-
 ### Base settings: take from .profile
 . ~/.profile
 
@@ -17,7 +7,7 @@ if [ -r ~/.Xresources ]
 then xrdb -merge ~/.Xresources
 fi
 
-~/bin/set-wallpaper
+set-wallpaper
 
 # Turn off audible bell
 xset -b
@@ -58,26 +48,21 @@ done
 setxkbmap -option ctrl:nocaps
 
 ### Desktop and apps
-if [ -x /usr/local/bin/dbus-launch -a -z "${DBUS_SESSION_BUS_ADDRESS}" ]; then
-    eval $(dbus-launch --sh-syntax --exit-with-x11)
+if [ -z "${DBUS_SESSION_BUS_ADDRESS}" ] && has dbus-launch
+then eval $(dbus-launch --sh-syntax --exit-with-x11)
 fi
 
-if has xidle && has xlock
-then xidle -timeout 600 -program "$(which xlock)" &
+xlock=$(which slock xlock 2>/dev/null)
+if has xidle && [ -n "${xlock}" ]
+then xidle -timeout 600 -program "${xlock}" &
 fi
 
 # Firefox
 export MOZ_ACCELERATED=1
 export MOZ_WEBRENDER=1
 
-LOCATION=48.2:16.3667  # Vienna, AT
-if has redshift
-then
-    redshift -x
-    redshift -P -l $LOCATION -t 6500:5500 &
-fi
-
+wm=$(which quartz-wm i3 dwm awesome cwm x-window-manager xterm false 2>/dev/null | head -1)
 if has ck-launch-session
-then exec ck-launch-session $WM
-else exec $WM
+then wm="ck-launch-session $wm"
 fi
+exec $wm

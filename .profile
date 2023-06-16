@@ -12,8 +12,7 @@ _arch=$(uname -m)
 
 # Detect paths which should be added to $PATH
 _mkpath() {
-    # Put our own ~/bin first.
-    # Also pick a subdirectory with precompiled executables for our arch.
+    # Pick a subdirectory with executables for our OS/arch.
     echo ~/bin/${_os}-${_arch}
     # On Darwin arm64, we can also use x86_64 binaries.
     if [ "x${_os}-${_arch}" = "xDarwin-arm64" ]
@@ -23,7 +22,6 @@ _mkpath() {
     echo ~/.local/bin
     echo ~/.cargo/bin  "$XDG_DATA_HOME/cargo/bin"
     echo ~/.poetry/bin "$XDG_DATA_HOME/poetry/bin"
-    echo ~/.nix-profile/bin
 
     export GOPATH=~/go
     echo $GOPATH/bin
@@ -32,23 +30,22 @@ _mkpath() {
     echo ${PYENV_ROOT}/bin
     echo ${PYENV_ROOT}/shims
 
-    if [ -d ~/.gem/ruby ]
-    then find ~/.gem/ruby -maxdepth 2 -type d -name bin
+    if [[ -d ~/.gem/ruby ]]
+    then find ~/.gem/ruby -maxdepth 2 -type d -name bin | sort -Vr
     fi
 
-    if [ -d ~/Library/Python ]
-    then find ~/Library/Python -maxdepth 2 -type d -name bin
+    if [[ -d ~/Library/Python ]]
+    then find ~/Library/Python -maxdepth 2 -type d -name bin | sort -Vr
     fi
 
-    if [ -d /Applications ]
-    then find /Applications -type d -name bin -maxdepth 3
+    if [[ -d /Applications ]]
+    then find /Applications -type d -name bin -maxdepth 4
     fi
 
-    # NixOS
-    if [ -d /nix ]
+    if [[ -d /nix ]]
     then
-        echo /run/wrappers/bin
-        echo /etc/profiles/per-user/$(id -un)/bin
+        echo ~/.nix-profile/bin
+        echo /etc/profiles/per-user/$USER/bin
         echo /nix/var/nix/profiles/default/bin
         echo /run/current-system/sw/bin
     fi
@@ -161,13 +158,11 @@ fi
 
 # Choose preferred software
 p=$(which less more 2>/dev/null | head -1)
-[ -n $p ] && export PAGER=$p
-p=$(which mg kak vim vi nano 2>/dev/null | head -1)
-[ -n $p ] && export EDITOR=$p VISUAL=$p
+[[ -n $p ]] && export PAGER=$p
+p=$(which hx vim vi kak mg nano 2>/dev/null | head -1)
+[[ -n $p ]] && export EDITOR=$p VISUAL=$p
 p=$(which firefox chromium chrome surf2 surf dillo x-www-browser 2>/dev/null | head -1)
-[ -n $p ] && export BROWSER=$p
-p=$(which quartz-wm i3 dwm awesome cwm x-window-manager xterm 2>/dev/null | head -1)
-[ -n $p ] && export WM=$p
+[[ -n $p ]] && export BROWSER=$p
 unset p
 
 # Aliases for interactive use
