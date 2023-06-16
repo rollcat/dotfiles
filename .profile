@@ -21,8 +21,8 @@ _mkpath() {
     fi
     echo ~/bin
     echo ~/.local/bin
-    echo ~/.cargo/bin
-    echo ~/.poetry/bin
+    echo ~/.cargo/bin  "$XDG_DATA_HOME/cargo/bin"
+    echo ~/.poetry/bin "$XDG_DATA_HOME/poetry/bin"
     echo ~/.nix-profile/bin
 
     export GOPATH=~/go
