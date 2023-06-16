@@ -14,12 +14,9 @@ case "${1:-$(dark-notify -e)}" in
         emacs_theme=dark
         ;;
 esac
-emacsclient -e "(update-theme \"${emacs_theme}\")" || true
-osascript <<EOF
-tell application "Terminal"
-    set default settings to settings set "${terminal_theme}"
-end tell
-tell application "Terminal"
-    set current settings of tabs of windows to settings set "${terminal_theme}"
-end tell
-EOF
+if hash emacsclient 2>/dev/null
+then emacsclient -e "(update-theme '${emacs_theme})" >/dev/null || true
+fi
+if hash osascript 2>/dev/null
+then update-terminal-theme.applescript "${terminal_theme}" || true
+fi
