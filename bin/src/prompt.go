@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -54,6 +55,14 @@ func abbrevHome(s string) string {
 	return s
 }
 
+func getenv(key string, def string) (val string) {
+	val, ok := os.LookupEnv(key)
+	if !ok {
+		val = def
+	}
+	return
+}
+
 func pythonVirtualEnv() string {
 	venv := path.Base(path.Dir(path.Clean(os.Getenv("VIRTUAL_ENV"))))
 	if venv == "." {
@@ -94,6 +103,19 @@ func nixShell() string {
 	return os.Getenv("IN_NIX_SHELL")
 }
 
+func dockerContext() string {
+	dockerConfig := getenv("DOCKER_CONFIG", path.Join(u.HomeDir, ".docker"))
+	data, err := ioutil.ReadFile(path.Join(dockerConfig, "config.json"))
+	if err != nil {
+		return ""
+	}
+	var v struct {
+		CurrentContext string `json:"currentContext"`
+	}
+	json.Unmarshal(data, &v)
+	return v.CurrentContext
+}
+
 func main() {
 	var isRoot = os.Getuid() == 0
 	if len(os.Args) >= 2 {
@@ -122,23 +144,33 @@ func main() {
 	if gitb != "" {
 		gitb = fmt.Sprintf("[git=%s] ", gitb)
 	}
+
 	nix := nixShell()
 	if nix != "" {
 		nix = fmt.Sprintf("[nix=%s] ", nix)
 	}
 
+	dc := dockerContext()
+	if dc != "" && dc != "default" {
+		dc = fmt.Sprintf("[docker=%s] ", dc)
+	}
+
 	fmt.Printf(
-		": %s%s%s@%s%s%s %s%s%s%s\n%s ",
+		": %s%s%s@%s%s%s %s%s%s%s%s\n%s ",
+		// user@host
 		userColor.ansi(),
 		u.Username,
 		reset.ansi(),
 		hostColor.ansi(),
 		host,
 		reset.ansi(),
+		// [tag=value]
 		gitb,
 		nix,
 		venv,
+		dc,
 		abbrevHome(cwd),
+		// $ or #
 		prompt,
 	)
 }
