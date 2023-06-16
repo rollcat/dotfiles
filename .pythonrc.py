@@ -88,3 +88,10 @@ def histogram(it: t.Iterable[T]) -> t.Dict[T, int]:
     for obj in it:
         hist[obj] = hist.get(obj, 0) + 1
     return hist
+
+
+def normalize(vec):
+    l = math.sqrt(sum(x ** 2 for x in vec))
+    if l == 0:
+        return vec
+    return tuple(x / l for x in vec)
