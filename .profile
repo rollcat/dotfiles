@@ -166,6 +166,9 @@ p=$(which firefox chromium chrome surf2 surf dillo x-www-browser 2>/dev/null | h
 [[ -n $p ]] && export BROWSER=$p
 unset p
 
+# Allow nix-env to install non-free software
+export NIXPKGS_ALLOW_UNFREE=1
+
 # Aliases for interactive use
 alias py=python3
 alias ipy='python3 -m IPython'
