@@ -44,6 +44,7 @@ _mkpath() {
 
     if [[ -d /nix ]]
     then
+        echo /run/wrappers/bin
         echo ~/.nix-profile/bin
         echo /etc/profiles/per-user/$USER/bin
         echo /nix/var/nix/profiles/default/bin
