@@ -1,0 +1,68 @@
+#!/bin/sh
+set -eu
+
+uname=$(uname)
+
+list_nameservers() {
+    awk '$1 == "nameserver" {print $2}' < /etc/resolv.conf | uniq
+}
+
+
+list_gateways() {
+    _${uname}_list_gateways
+}
+
+list_friends() {
+    echo 1.1.1.1
+}
+
+_Darwin_list_gateways() {
+    netstat -rn -f inet \
+        | awk '$1 == "default" && $2 !~ "link#.+" {print $2}' \
+        | uniq
+}
+
+_Linux_list_gateways() {
+    ip route | awk '$1 == "default" {print $3}'
+}
+
+_ping_check_host() {
+    if ! ping -c1 -W1 "$1" > /dev/null
+    then echo "E: ping: $1"; return 1
+    fi
+}
+
+_curl_check_host() {
+    if ! curl --head -fsS -m 1 -o /dev/null "https://$1"
+    then echo "E: curl: $1"; return 1
+    fi
+}
+
+_dig_check_host() {
+    if ! dig "@$1" +time=1 >/dev/null
+    then echo "E: dig: $1"; return 1
+    fi
+}
+
+main() {
+    for host in $(list_nameservers)
+    do
+        if _ping_check_host $host && _dig_check_host $host
+        then echo "OK: $host"
+        fi
+    done
+    for host in $(list_gateways)
+    do
+        if _ping_check_host $host
+        then echo "OK: $host"
+        fi
+    done
+    for host in $(list_friends)
+    do
+        if _ping_check_host $host && _curl_check_host $host
+        then echo "OK: $host"
+        fi
+    done
+}
+
+main "$@"
