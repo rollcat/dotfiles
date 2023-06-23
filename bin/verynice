@@ -1,0 +1,21 @@
+#!/bin/sh
+#
+# Run a program, but be very, very nice to other programs.
+set -eu
+
+case "$(uname -s)" in
+    Darwin)
+        exec \
+            taskpolicy -b -c background -d throttle -g throttle -- \
+            nice -n 19 -- \
+            "$@"
+        ;;
+    *)
+        if hash ionice 2>/dev/null
+        then
+            exec ionice -c idle -- nice -n 19 -- "$@"
+        else
+            exec nice -n 19 -- "$@"
+        fi
+        ;;
+esac
