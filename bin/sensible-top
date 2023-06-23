@@ -1,0 +1,15 @@
+#!/bin/sh
+set -eu
+
+main() {
+    for candidate in htop top
+    do
+        if which "$candidate" >/dev/null 2>/dev/null
+        then exec "$candidate"
+        fi
+    done
+    printf >&2 "E: cannot find a sensible process manager\n"
+    exit 2
+}
+
+main "$@"
