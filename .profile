@@ -20,8 +20,10 @@ _mkpath() {
     fi
     echo ~/bin
     echo ~/.local/bin
-    echo ~/.cargo/bin  "$XDG_DATA_HOME/cargo/bin"
-    echo ~/.poetry/bin "$XDG_DATA_HOME/poetry/bin"
+    echo ~/.cargo/bin
+    echo "${XDG_DATA_HOME:-${HOME}/.local/share}/cargo/bin"
+    echo ~/.poetry/bin
+    echo "${XDG_DATA_HOME:-${HOME}/.local/share}/poetry/bin"
 
     export GOPATH=~/go
     echo $GOPATH/bin
@@ -30,19 +32,19 @@ _mkpath() {
     echo ${PYENV_ROOT}/bin
     echo ${PYENV_ROOT}/shims
 
-    if [[ -d ~/.gem/ruby ]]
+    if [ -d ~/.gem/ruby ]
     then find ~/.gem/ruby -maxdepth 2 -type d -name bin | sort -Vr
     fi
 
-    if [[ -d ~/Library/Python ]]
+    if [ -d ~/Library/Python ]
     then find ~/Library/Python -maxdepth 2 -type d -name bin | sort -Vr
     fi
 
-    if [[ -d /Applications ]]
+    if [ -d /Applications ]
     then find /Applications -type d -name bin -maxdepth 4
     fi
 
-    if [[ -d /nix ]]
+    if [ -d /nix ]
     then
         echo /run/wrappers/bin
         echo ~/.nix-profile/bin
@@ -159,11 +161,11 @@ fi
 
 # Choose preferred software
 p=$(which less more 2>/dev/null | head -1)
-[[ -n $p ]] && export PAGER=$p
+[ -n $p ] && export PAGER=$p
 p=$(which hx vim vi kak mg nano 2>/dev/null | head -1)
-[[ -n $p ]] && export EDITOR=$p VISUAL=$p
+[ -n $p ] && export EDITOR=$p VISUAL=$p
 p=$(which firefox chromium chrome surf2 surf dillo x-www-browser 2>/dev/null | head -1)
-[[ -n $p ]] && export BROWSER=$p
+[ -n $p ] && export BROWSER=$p
 unset p
 
 # Allow nix-env to install non-free software
