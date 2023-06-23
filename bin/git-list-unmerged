@@ -1,2 +1,4 @@
 #!/bin/sh
+set -eu
+# List unmerged git branches.
 exec git branch --no-merged "$(git rev-parse HEAD)"
