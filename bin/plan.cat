@@ -1,6 +1,17 @@
 #!/bin/sh
 # https://plan.cat/
+set -eu
+
 user=rollcat
-T=`mktemp` && curl -so $T https://plan.cat/~${user} && \
-	$EDITOR $T && \
-	curl -su ${user} -F "plan=<$T" https://plan.cat/stdin
+tempfile=$(mktemp)
+cleanup() { rm -f $tempfile; }
+trap cleanup EXIT INT TERM
+curl -so $tempfile https://plan.cat/~${user}
+sensible-editor $tempfile
+password=$(op --account NGHK7WMZ2VEKHKXDPYKMVCVB3A item get plan.cat --fields password || true)
+if [ -n "${password}" ]
+then
+    curl -su "${user}:${password}" -F "plan=<$tempfile" https://plan.cat/stdin
+else
+    curl -su "${user}" -F "plan=<$tempfile" https://plan.cat/stdin
+fi
