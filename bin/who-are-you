@@ -1,41 +1,48 @@
 #!/bin/sh
 set -eu
-# Identify a local IP address
+# Perform a reverse mDNS lookup to find out the host name of a local
+# IP address.
+#
+# You can use it like this:
+#
+# who-are-you $(who-is-there)
 
-has() {
-    which "$@" >/dev/null 2>/dev/null
-}
-
-who_are_you() {
-    if has mdnsctl
-    then
-        for arg
-        do
-            mdnsctl rlookup "$arg"
-        done
-    elif has avahi-resolve-address
-    then
-        avahi-resolve-address -- "$@" || true
-    elif has dig
-    then
-        for arg
-        do
-            echo "$arg" $(dig -x "$arg" @224.0.0.251 -p 5353 +short +time=1 || true)
-        done
-    else
-        for arg
-        do
-            echo "$arg"
-        done
-    fi
-}
+if hash mdnsctl 2>/dev/null
+then
+    mdns_rlookup() {
+        mdnsctl rlookup "$1"
+    }
+elif hash avahi-resolve-address 2>/dev/null
+then
+    mdns_rlookup() {
+        avahi-resolve-address -- "$1"
+    }
+elif hash dig 2>/dev/null
+then
+    mdns_rlookup() {
+        ip=$(dig -x "$1" @224.0.0.251 -p 5353 +short +time=1)
+        echo "$1" $ip
+    }
+else
+    # Fallback
+    mdns_rlookup() {
+        echo "$1"
+    }
+fi
 
 main() {
-    for host in "$@"
-    do
-        who_are_you "$host"
-    done
-    
+    if [ x"$#" = x0 ] || [ x"${1:-}" = x-h ] || [ x"${1:-}" = x--help ]
+    then
+        echo 'usage: who-are-you $(who-is-there)'
+        exit 0
+    fi
+    if [ x"$#" = x1 ]
+    then
+        mdns_rlookup "$1"
+        exit $?
+    fi
+    # re-exec self, but using xargs to run the lookups in parallel.
+    echo "$@" | exec xargs -P0 -n1 who-are-you
 }
 
 main "$@"
