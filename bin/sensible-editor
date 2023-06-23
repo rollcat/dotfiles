@@ -1,0 +1,22 @@
+#!/bin/sh
+set -eu
+
+main() {
+    # Try to connect to an Emacs server
+    if hash emacsclient 2>/dev/null \
+            && emacsclient -e 1 > /dev/null
+    then exec emacsclient -c "$@"
+    fi
+
+    for candidate in "$EDITOR" mg hx kak vim vi nano
+    do
+        if which "$candidate" >/dev/null 2>/dev/null
+        then exec "$candidate" "$@"
+        fi
+    done
+
+    printf >&2 "E: cannot find a sensible editor\n"
+    exit 2
+}
+
+main "$@"
