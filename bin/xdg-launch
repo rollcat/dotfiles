@@ -1,0 +1,20 @@
+#!/bin/sh
+set -eu
+
+main() {
+    desktop="$1"; shift
+    hash gio
+
+    for dir in $(echo "${XDG_DATA_DIRS:-/usr/local/share:/usr/share}" | tr ':' ' ')
+    do
+        # printf >&2 "D: dir: %s\n" "$dir"
+        if [ -f "$dir/applications/$desktop" ]
+        then
+            exec gio launch "$dir/applications/$desktop" "$@"
+        fi
+    done
+    printf >&2 'E: could not find: %s\n' "$desktop"
+    exit 2
+}
+
+main "$@"

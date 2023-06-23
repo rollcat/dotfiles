@@ -1,0 +1,29 @@
+#!/bin/sh
+set -eu
+
+main() {
+    if [ -d /Applications/Safari.app ]
+    then exec open -a Safari "$@"
+    fi
+
+    if hash xdg-settings gio 2>/dev/null
+    then
+        browser="$(xdg-settings get default-web-browser)"
+        if [ -n "$browser" ]
+        then exec xdg-launch "$browser" "$@"
+        fi
+    fi
+
+    # Opinionated list of possible fallbacks
+    for candidate in x-www-browser chromium firefox surf2 surf cog netsurf dillo
+    do
+        if hash "$candidate" 2>/dev/null
+        then exec "$candidate" "$@"
+        fi
+    done
+
+    printf >&2 "E: cannot find a sensible web browser\n"
+    exit 2
+}
+
+main "$@"
