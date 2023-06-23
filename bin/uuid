@@ -1,3 +1,84 @@
 #!/usr/bin/env python3
+import getopt
+import sys
 import uuid
-print(str(uuid.uuid4()))
+
+
+def usage() -> None:
+    print("Usage: uuid [-h1345] [-n NAMESPACE] [NAMES...]")
+    return
+
+
+def help() -> None:
+    print("Usage:")
+    print("    uuid [-h]")
+    print("    uuid [-1 | -4]")
+    print("    uuid [-3 | -5] [-n namespace] NAMES...")
+    print("Options:")
+    print("    -h  Show this help")
+    print("    -1  Generate one UUIDv1")
+    print("    -3  Generate one UUIDv3 for each NAME")
+    print("    -4  Generate one UUIDv4 (default)")
+    print("    -5  Generate one UUIDv5 for each NAME")
+    print("    -n  Use given NAMESPACE for UUID v3 or v5;")
+    print("        can be one of: dns, oid, url, x500, or a UUID value;")
+    print("        default namespace is the null UUID")
+    return
+
+
+def main() -> None:
+    try:
+        opts, args = getopt.getopt(sys.argv[1:], "h1345n:")
+    except getopt.GetoptError:
+        usage()
+        exit(2)
+
+    version = 4
+    namespace = uuid.UUID(int=0)
+    for flag, opt in opts:
+        if flag == "-h":
+            help()
+            exit()
+        elif flag == "-1":
+            version = 1
+        elif flag == "-3":
+            version = 3
+        elif flag == "-4":
+            version = 4
+        elif flag == "-5":
+            version = 5
+        elif flag == "-n":
+            if opt == "dns":
+                namespace = uuid.NAMESPACE_DNS
+            elif opt == "oid":
+                namespace = uuid.NAMESPACE_OID
+            elif opt == "url":
+                namespace = uuid.NAMESPACE_URL
+            elif opt == "x500":
+                namespace = uuid.NAMESPACE_X500
+            else:
+                try:
+                    namespace = uuid.UUID(opt)
+                except ValueError as e:
+                    print(e.args[0], file=sys.stderr)
+                    exit(2)
+        else:
+            raise RuntimeError(flag)
+
+    if version == 1:
+        print(uuid.uuid1())
+    elif version == 3:
+        for arg in args:
+            print(uuid.uuid3(namespace, arg))
+    elif version == 4:
+        print(uuid.uuid4())
+    elif version == 5:
+        for arg in args:
+            print(uuid.uuid5(namespace, arg))
+    else:
+        raise RuntimeError(version)
+    return
+
+
+if __name__ == "__main__":
+    main()

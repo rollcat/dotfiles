@@ -1,0 +1,139 @@
+#!/usr/bin/env python3
+import datetime
+import getopt
+import os
+import random
+import sys
+import typing as t
+import uuid
+
+
+def uuid8tr(
+    timestamp: t.Optional[datetime.datetime] = None,
+    rand: random.Random = random._inst,
+) -> uuid.UUID:
+    """Generates a UUIDv8 using a timestamp and a random value.
+
+    The date and time stamp are ISO8601 human-readable when
+    serialized into the hex representation:
+
+        YYYYMMDD-HHMM-VRRR-VRRR-RRRRRRRRRRRR
+
+    The default timestamp is the current date and time in UTC.
+
+    This is compliant with the draft revision to RFC4122:
+
+    <https://datatracker.ietf.org/doc/draft-ietf-uuidrev-rfc4122bis/>
+    """
+    version = 8
+    timestamp = timestamp or datetime.datetime.utcnow()
+    dt = int(timestamp.strftime("%Y%m%d%H%M"), 16)
+    r = rand.randint(0, 0x0FFF_FFFF_FFFFFFFFFFFF)
+    #       YYYYMMDD-HHMM-VRRR-VRRR-RRRRRRRRRRRR
+    i = (dt << 80) | r
+    i &= ~(0xC000 << 48)
+    i |= 0x8000 << 48
+    i &= ~(0xF000 << 64)
+    i |= version << 76
+    u = uuid.UUID(int=i)
+    assert u.version == version, u.version
+    assert u.variant == uuid.RFC_4122, u.variant
+    return u
+
+
+def uuid8tnr(
+    timestamp: t.Optional[datetime.datetime] = None,
+    node: t.Optional[str] = None,
+    rand: random.Random = random._inst,
+) -> uuid.UUID:
+    """Generates a UUIDv8 using a timestamp, node name, and a random value.
+
+    The date and time stamp are ISO8601 human-readable when serialized into the hex
+    representation. The node name is used to derive a UUIDv5 value in the DNS namespace;
+    the middle sections are copied into the resulting UUIDv8.
+
+        YYYYMMDD-HHMM-VNNN-VNNN-RRRRRRRRRRRR
+
+    The default timestamp is the current date and time in UTC.
+
+    If node name is omitted, current host name is used.
+
+    This is compliant with the draft revision to RFC4122:
+
+    <https://datatracker.ietf.org/doc/draft-ietf-uuidrev-rfc4122bis/>
+    """
+    version = 8
+    timestamp = timestamp or datetime.datetime.utcnow()
+    dt = int(timestamp.strftime("%Y%m%d%H%M"), 16)
+    node_id = (
+        uuid.uuid5(
+            uuid.NAMESPACE_DNS,
+            node if node is not None else os.uname().nodename,
+        ).int
+        & 0x000000000000FFFFFFFF000000000000
+    )
+    r = rand.randint(0, 0xFFFFFFFFFFFF)
+    i = (dt << 80) | node_id | r
+    i &= ~(0xC000 << 48)
+    i |= 0x8000 << 48
+    i &= ~(0xF000 << 64)
+    i |= version << 76
+    u = uuid.UUID(int=i)
+    assert u.version == version, u.version
+    assert u.variant == uuid.RFC_4122, u.variant
+    return u
+
+
+def usage() -> None:
+    print("Usage: uuidx [-h] [-8 FUNC]")
+    return
+
+
+def help() -> None:
+    usage()
+    print("    This tool partially implements the revised RFC4122")
+    print("    (draft-ietf-uuidrev-rfc4122bis-07)")
+    print("Options:")
+    print("    -h  Show this help")
+    print("    -8  Generate one UUIDv8, using FUNC")
+    print("FUNC for UUIDv8 can be one of:")
+    print("    tr   Use human-readable timestamp + random value")
+    print("    tnr  Use timestamp + node ID (from hostname) + random value")
+    return
+
+
+def main() -> None:
+    try:
+        opts, args = getopt.getopt(sys.argv[1:], "h8:")
+    except getopt.GetoptError:
+        usage()
+        exit(2)
+
+    version = 8
+    funcs = {
+        "tnr": uuid8tnr,
+        "tr": uuid8tr,
+    }
+    func = funcs["tnr"]
+    for flag, opt in opts:
+        if flag == "-h":
+            help()
+            exit()
+        elif flag == "-8":
+            version = 8
+            if opt not in funcs:
+                usage()
+                exit(2)
+            func = funcs[opt]
+        else:
+            raise RuntimeError(flag)
+
+    if version == 8:
+        print(func())
+    else:
+        raise RuntimeError(version)
+    return
+
+
+if __name__ == "__main__":
+    main()
