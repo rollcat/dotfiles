@@ -9,14 +9,10 @@ case $(uname) in
     OpenBSD)
         exec sysctl -n hw.ncpuonline
         ;;
+    Linux)
+        exec grep -c '^processor' /proc/cpuinfo
+        ;;
     *)
-        # Linux
-        if [ -r /proc/cpuinfo ]
-        then
-            grep -c '^processor' /proc/cpuinfo
-        else
-            echo 1
-        fi
-        exit
+        echo 1
         ;;
 esac

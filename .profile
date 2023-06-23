@@ -62,6 +62,8 @@ _mkpath() {
     echo /usr/games
     echo /bin
     echo /sbin
+
+    echo ~/bin/fallback
 }
 
 export PATH=$(_mkpath | tr '\n' :)
