@@ -1,0 +1,98 @@
+#!/usr/bin/env python3.10
+# Send a notification with Pushover.
+#
+# Docs: https://pushover.net/api
+# API secrets: make -C ~/.secrets pushover.json
+
+import getopt
+import http.client
+import json
+import os
+import sys
+import urllib.parse
+
+assert sys.version_info >= (3, 10), sys.version_info
+
+PUSHOVER_USER_KEY: str
+PUSHOVER_APP_TOKEN: str
+
+
+def send(
+    message: str,
+    *,
+    priority: int | None = None,
+    title: str | None = None,
+    url: str | None = None,
+) -> None:
+    assert priority in {-2, -1, 0, 1, 2, None}
+    data: dict[str, str | int] = {
+        "token": PUSHOVER_APP_TOKEN,
+        "user": PUSHOVER_USER_KEY,
+        "message": message,
+    }
+    if priority is not None:
+        data["priority"] = priority
+    if title is not None:
+        data["title"] = title
+    if url is not None:
+        data["url"] = url
+
+    conn = http.client.HTTPSConnection("api.pushover.net:443")
+    conn.request(
+        "POST",
+        "/1/messages.json",
+        urllib.parse.urlencode(data),
+        {"Content-type": "application/x-www-form-urlencoded"},
+    )
+    r = conn.getresponse()
+    data = json.load(r)
+    if data["status"] != 1:
+        raise RuntimeError(data)
+    return
+
+
+def usage() -> None:
+    print("usage: pushover [-p priority] [-t title] [-u url] <message...>")
+    return
+
+
+def main() -> None:
+    global PUSHOVER_USER_KEY
+    global PUSHOVER_APP_TOKEN
+    opts, args = getopt.getopt(sys.argv[1:], "hp:t:u:")
+    priority: int | None = None
+    title: str | None = None
+    url: str | None = None
+
+    for flag, opt in opts:
+        if flag == "-h":
+            usage()
+            exit()
+        elif flag == "-p":
+            priority = int(opt)
+            if priority not in {-2, -1, 0, 1, 2}:
+                print("priority is outside of range [-2, 2] (inclusive)")
+                exit(2)
+        elif flag == "-t":
+            title = opt
+        elif flag == "-u":
+            url = opt
+
+    if os.path.exists(fpath := os.path.expanduser("~/.secrets/pushover.json")):
+        with open(fpath) as f:
+            secrets = json.load(f)
+        PUSHOVER_USER_KEY = secrets["PUSHOVER_USER_KEY"]
+        PUSHOVER_APP_TOKEN = secrets["PUSHOVER_APP_TOKEN"]
+
+    try:
+        PUSHOVER_USER_KEY = os.environ["PUSHOVER_USER_KEY"]
+        PUSHOVER_APP_TOKEN = os.environ["PUSHOVER_APP_TOKEN"]
+    except LookupError:
+        pass
+
+    message = " ".join(args)
+    send(message, priority=priority, title=title, url=url)
+
+
+if __name__ == "__main__":
+    main()
