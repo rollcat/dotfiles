@@ -1,0 +1,20 @@
+#!/bin/sh
+set -eu
+
+main() {
+    if [ -d /Applications/Utilities/Terminal.app ]
+    then exec open -a Terminal
+    fi
+
+    for candidate in foot x-terminal-emulator urxvt xterm
+    do
+        if hash "$candidate" 2>/dev/null
+        then exec "$candidate"
+        fi
+    done
+
+    printf >&2 "E: cannot find a sensible terminal emulator\n"
+    exit 2
+}
+
+main "$@"
