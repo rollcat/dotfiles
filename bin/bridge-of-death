@@ -1,0 +1,80 @@
+#!/usr/bin/env python3
+"""Ask the user a question before proceeding.
+
+The purpose of this simple script is to ensure the user is paying attention.
+You can use it in an automation step that requires manual confirmation
+before performing a dangerous action (e.g. wiping the hard drive).
+
+https://www.youtube.com/watch?v=0D7hFHfLEyk
+
+"""
+import os
+import random
+import typing as t
+from dataclasses import dataclass, field
+
+
+@dataclass
+class Question:
+    question: str = field()
+    answer: t.Union[str, t.Callable[[str], bool]] = field()
+
+    def check_answer(self, answer: str) -> bool:
+        if callable(self.answer):
+            return self.answer(answer)
+        return self.answer == answer
+
+
+def check_answer_os(answer: str) -> bool:
+    os = os.uname().sysname.casefold()
+    if os == "linux":
+        return answer in ["linux", "gnu/linux"]
+    elif os == "darwin":
+        return answer in ["mac", "macos", "osx", "darwin", "bsd"]
+    elif os.endswith("bsd"):
+        return answer in ["bsd", os]
+    else:
+        return answer == os
+
+
+questions: t.List[Question] = [
+    Question("What is your name?", os.getlogin().casefold()),
+    Question(
+        "What is your quest?",
+        lambda answer: "to seek the holy grail" in answer,
+    ),
+    Question("What is your uid?", str(os.getuid())),
+    Question("What is your gid?", str(os.getgid())),
+    Question(
+        "What is your operating system?",
+        check_answer_os,
+    ),
+    Question(
+        "What is your hostname?",
+        os.uname().nodename.casefold(),
+    ),
+    Question(
+        "What is your CPU architecture?",
+        os.uname().machine.casefold(),
+    ),
+]
+
+
+def main() -> None:
+    q = random.choice(questions)
+    try:
+        a = input(f"{q.question}\n> ").casefold()
+    except (EOFError, KeyboardInterrupt):
+        print()
+        a = ""
+    if q.check_answer(a):
+        print("You may pass.")
+        exit(0)
+    else:
+        print("You shall perish!")
+        exit(1)
+    return
+
+
+if __name__ == "__main__":
+    main()
