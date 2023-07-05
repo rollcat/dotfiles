@@ -14,6 +14,7 @@ _arch=$(uname -m)
 _mkpath() {
     # Pick a subdirectory with executables for our OS/arch.
     echo ~/bin/${_os}-${_arch}
+    echo ~/bin/${_os}
     # On Darwin arm64, we can also use x86_64 binaries.
     if [ "x${_os}-${_arch}" = "xDarwin-arm64" ]
     then echo ~/bin/Darwin-x86_64
@@ -38,10 +39,6 @@ _mkpath() {
 
     if [ -d ~/Library/Python ]
     then find ~/Library/Python -maxdepth 2 -type d -name bin | sort -Vr
-    fi
-
-    if [ -d /Applications ]
-    then find /Applications -type d -name bin -maxdepth 4
     fi
 
     if [ -d /nix ]

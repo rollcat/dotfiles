@@ -1,0 +1,42 @@
+#!/bin/sh
+#
+# Find all matching applications using a Spotlight/mdfind query,
+# search their bundled bin folder for an executable, and launch the
+# executable with the remaining arguments.
+set -eu
+
+search() {
+    appq="$1"; shift
+    binq="$1"; shift
+    IFS=''
+    mdfind kind:Application "$appq" 2>/dev/null | while read line
+    do
+        [[ -d "${line}" ]] || continue
+        if [ -x "${line}"/Contents/MacOS/bin/"${binq}" ]
+        then
+            echo "${line}"/Contents/MacOS/bin/"${binq}"
+            break
+        elif [ -x "${line}"/Contents/MacOS/"${binq}" ]
+        then
+            echo "${line}"/Contents/MacOS/"${binq}"
+            break
+        fi
+    done
+}
+
+main() {
+    appq="$1"; shift
+    binq="$1"; shift
+
+    bin="$(search "$appq" "$binq")"
+
+    if [ -z "$bin" ]
+    then
+        printf >&2 'E: cannot find "%s" in installed applications' "$binq"
+        exit 1
+    fi
+
+    exec "$bin" "$@"
+}
+
+main "$@"
