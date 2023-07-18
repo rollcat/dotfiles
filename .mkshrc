@@ -11,7 +11,7 @@ fi
 . ~/.profile
 
 # prompt
-PS1='$(prompt)'
+PS1='$(command prompter)'
 
 # fallback #! interpreter
 EXECSHELL=/bin/false

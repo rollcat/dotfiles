@@ -20,10 +20,9 @@ default_termtitle() {
 
 # prompt
 # TODO: highlight non-zero exit status
-PS1="%# "
+PS1='$(command prompter)'
 precmd() {
     default_termtitle
-    PS1="$(prompt)"
 }
 PROMPT_COMMAND=precmd
 

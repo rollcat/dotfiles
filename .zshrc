@@ -60,12 +60,11 @@ default_termtitle() {
 
 # prompt
 # TODO: highlight non-zero exit status
-PS1="%# "
 precmd() {
     default_termtitle
     # send a bell to mark window urgent
     echo -n '\a'
-    PS1="$(command prompt)"
+    PS1="$(command prompter)"
 }
 preexec() {
     termtitle "$2"
