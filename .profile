@@ -75,20 +75,6 @@ case "$0" in
         ;;
 esac
 
-# our termcap may be unavailable on this system - choose a safer bet
-if ! infocmp >/dev/null
-then case $TERM in
-    rxvt-unicode-256color)
-        export TERM=xterm-256color
-        ;;
-    rxvt*)
-        export TERM=xterm
-        ;;
-    *)
-        export TERM=xterm
-        ;;
-esac; fi
-
 # Mail, notifications
 export MAILCHECK=0
 export MAIL=/var/mail/${LOGNAME:-$USER}
