@@ -60,6 +60,7 @@ _mkpath() {
     echo /bin
     echo /sbin
 
+    echo ~/src/github.com/9fans/plan9port
     echo ~/bin/fallback
 }
 
