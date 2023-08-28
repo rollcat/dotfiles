@@ -6,23 +6,30 @@ set -eu
 
 TIMEOUT=1
 
-check_ping() {
-    case $(uname) in
-        Darwin)
-            ping -qQ -c1 -t${TIMEOUT} "$1" 2>/dev/null >/dev/null
-            ;;
-        Linux)
+case $(uname) in
+    Darwin)
+        check_ping() {
+            # https://keith.github.io/xcode-man-pages/ping.8.html
+            ping -qQ -c1 -W$((${TIMEOUT} * 1000)) "$1" 2>/dev/null >/dev/null
+        }
+        ;;
+    Linux)
+        check_ping() {
+            # https://linux.die.net/man/8/ping
             ping -q -c1 -W${TIMEOUT} "$1" 2>/dev/null >/dev/null
-            ;;
-        OpenBSD)
+        }
+        ;;
+    OpenBSD)
+        check_ping() {
+            # https://man.openbsd.org/ping.8
             ping -q -c1 -w${TIMEOUT} "$1" 2>/dev/null >/dev/null
-            ;;
-        *)
-            printf 'unsupported OS: %s' $(uname)
-            exit 111
-            ;;
-    esac
-}
+        }
+        ;;
+    *)
+        printf 'unsupported OS: %s' $(uname)
+        exit 111
+        ;;
+esac
 
 main() {
     mode=up
