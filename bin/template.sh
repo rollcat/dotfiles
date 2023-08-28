@@ -25,7 +25,7 @@ cleanup() {
 
 main() {
     trap cleanup EXIT INT TERM QUIT
-    args=$(getopt "h" $*)
+    args=$(getopt "h" $* || { show_usage; exit 1; })
     set -- $args
     while :; do
         case "$1" in
