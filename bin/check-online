@@ -45,24 +45,29 @@ _dig_check_host() {
 }
 
 main() {
+    status=0
     for host in $(list_nameservers)
     do
         if _ping_check_host $host && _dig_check_host $host
         then echo "OK: $host"
+        else status=1
         fi
     done
     for host in $(list_gateways)
     do
         if _ping_check_host $host
         then echo "OK: $host"
+        else status=1
         fi
     done
     for host in $(list_friends)
     do
         if _ping_check_host $host && _curl_check_host $host
         then echo "OK: $host"
+        else status=1
         fi
     done
+    exit $status
 }
 
 main "$@"
