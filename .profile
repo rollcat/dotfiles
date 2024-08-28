@@ -116,6 +116,10 @@ export DO_NOT_TRACK=1
 export DOTNET_CLI_TELEMETRY_OPTOUT=1
 export HOMEBREW_NO_ANALYTICS=1
 
+# Make Homebrew less annoying
+export HOMEBREW_NO_AUTO_UPDATE=1
+export HOMEBREW_NO_ENV_HINTS=1
+
 # Pretty colors
 if has dircolors
 then
@@ -148,10 +152,8 @@ fi
 # Choose preferred software
 p=$(which less more 2>/dev/null | head -1)
 [ -n $p ] && export PAGER=$p
-p=$(which hx vim vi kak mg nano 2>/dev/null | head -1)
+p=$(which mg hx vim vi kak nano 2>/dev/null | head -1)
 [ -n $p ] && export EDITOR=$p VISUAL=$p
-p=$(which firefox chromium chrome surf2 surf dillo x-www-browser 2>/dev/null | head -1)
-[ -n $p ] && export BROWSER=$p
 unset p
 
 # Allow nix-env to install non-free software
@@ -161,6 +163,9 @@ export NIXPKGS_ALLOW_UNFREE=1
 alias py=python3
 alias ipy='python3 -m IPython'
 alias tf=terraform
+
+# Dear git, don't ask me for a password
+export GIT_TERMINAL_PROMPT=0
 
 # Common tools with uncommon names
 if has gnuwatch
