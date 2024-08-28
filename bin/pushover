@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.10
+#!/usr/bin/env python3
 # Send a notification with Pushover.
 #
 # Docs: https://pushover.net/api
@@ -9,9 +9,10 @@ import http.client
 import json
 import os
 import sys
+import typing as t
 import urllib.parse
 
-assert sys.version_info >= (3, 10), sys.version_info
+assert sys.version_info >= (3, 9), sys.version_info
 
 PUSHOVER_USER_KEY: str
 PUSHOVER_APP_TOKEN: str
@@ -20,9 +21,9 @@ PUSHOVER_APP_TOKEN: str
 def send(
     message: str,
     *,
-    priority: int | None = None,
-    title: str | None = None,
-    url: str | None = None,
+    priority: t.Optional[int] = None,
+    title: t.Optional[str] = None,
+    url: t.Optional[str] = None,
 ) -> None:
     assert priority in {-2, -1, 0, 1, 2, None}
     data: dict[str, str | int] = {
