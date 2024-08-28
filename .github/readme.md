@@ -6,8 +6,8 @@ To move in:
 
 ```shell
 git init
-git remote add github https://github.com/rollcat/dotfiles
-git pull github master
+git remote add codeberg https://codeberg.org/rollcat/dotfiles
+git pull codeberg master
 ```
 
 Git will complain about overwriting existing files, like `.profile`.
@@ -17,7 +17,7 @@ For pushing changes, you probably want to use the SSH transport
 instead:
 
 ```shell
-git remote set-url github git@github.com:rollcat/dotfiles.git
+git remote set-url codeberg git@codeberg.org:rollcat/dotfiles.git
 ```
 
 ## bin
