@@ -2,7 +2,7 @@
 set -eu
 case "$(uname)" in
     Darwin)
-        ssh-add --apple-use-keychain
+        /usr/bin/ssh-add --apple-load-keychain
         ;;
     *)
         ssh-add
