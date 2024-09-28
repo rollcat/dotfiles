@@ -1,39 +1,13 @@
--- make the window occupy the entire screen
-hs.hotkey.bind({"alt", "cmd"}, "f", function()
-      local win = hs.window.focusedWindow()
-      local f = win:frame()
-      local screen = win:screen()
-      local max = screen:frame()
-      win:setFrame({
-            x = max.x,
-            y = max.y,
-            w = max.w,
-            h = max.h,
-      })
-end)
+-- TODO: annotations for luals?
+assert(hs, "Run this code in Hammerspoon")
 
 -- resize
 
-local function atedges(scr, win)
-   local fuzz = 10
-   return {
-      left  = math.abs(win.x - scr.x) <= fuzz,
-      right = math.abs((win.x + win.w) - (scr.x + scr.w)) <= fuzz,
-      up    = math.abs(win.y - scr.y) <= fuzz,
-      down  = math.abs((win.y + win.h) - (scr.y + scr.h)) <= fuzz,
-   }
-end
-
-local resize_steps_up = { 0.33, 0.5, 0.66, 1 }
-local resize_steps_down = { 0.66, 0.5, 0.33 }
+local resize_steps_up = { 0.25, 0.35, 0.5, 0.65, 1 }
+local resize_steps_down = { 1, 0.65, 0.5, 0.35, 0.25 }
 local resize = {
-   -- adapt width/height by growing the window in given direction,
-   -- until it hits the edge of the screen; afterwards shrink it from
-   -- the other side.
-
-   right = function(scr, win)
-      local edges = atedges(scr, win)
-      if not edges.right then
+   -- grow or shrink the window horizontally
+   growh = function(scr, win)
          for _, step in ipairs(resize_steps_up) do
             if (scr.w * step * 0.9) > win.w then
                win.w = scr.w * step
@@ -43,42 +17,19 @@ local resize = {
          if win.w + win.x > scr.w + scr.x then
             win.x = scr.x + (scr.w - win.w)
          end
-      else
+         return win
+    end,
+    shrinkh = function(scr, win)
          for _, step in ipairs(resize_steps_down) do
             if (scr.w * step * 1.1) < win.w then
-               win.w = scr.w * step
-               win.x = scr.x + (scr.w - win.w)
-               break
+                win.w = scr.w * step
+                break
             end
-         end
       end
       return win
    end,
-
-   left = function(scr, win)
-      local edges = atedges(scr, win)
-      if not edges.left then
-         for _, step in ipairs(resize_steps_up) do
-            if (scr.w * step * 0.9) > win.w then
-               win.w = scr.w * step
-               win.x = scr.x + (scr.w - win.w)
-               break
-            end
-         end
-      else
-         for _, step in ipairs(resize_steps_down) do
-            if (scr.w * step * 1.1) < win.w then
-               win.w = scr.w * step
-               break
-            end
-         end
-      end
-      return win
-   end,
-
-   down = function(scr, win)
-      local edges = atedges(scr, win)
-      if not edges.down then
+   -- grow or shrink the window horizontally
+   growv = function(scr, win)
          for _, step in ipairs(resize_steps_up) do
             if (scr.h * step * 0.9) > win.h then
                win.h = scr.h * step
@@ -88,59 +39,41 @@ local resize = {
          if win.h + win.y > scr.h + scr.y then
             win.y = scr.y + (scr.h - win.h)
          end
-      else
+         return win
+    end,
+    shrinkv = function(scr, win)
          for _, step in ipairs(resize_steps_down) do
             if (scr.h * step * 1.1) < win.h then
-               win.h = scr.h * step
-               win.y = scr.y + (scr.h - win.h)
-               break
+                win.h = scr.h * step
+                break
             end
-         end
       end
       return win
    end,
-
-   up = function(scr, win)
-      local edges = atedges(scr, win)
-      if not edges.up then
-         for _, step in ipairs(resize_steps_up) do
-            if (scr.h * step * 0.9) > win.h then
-               win.h = scr.h * step
-               win.y = scr.y + (scr.h - win.h)
-               break
-            end
-         end
-      else
-         for _, step in ipairs(resize_steps_down) do
-            if (scr.h * step * 1.1) < win.h then
-               win.h = scr.h * step
-               break
-            end
-         end
-      end
-      return win
-   end,
-
 }
 
 hs.hotkey.bind({"ctrl", "alt", "cmd"}, "Right", function()
       local win = hs.window.focusedWindow()
-      win:setFrame(resize.right(win:screen():frame(), win:frame()))
+      if not win then return end
+      win:setFrame(resize.growh(win:screen():frame(), win:frame()))
 end)
 
 hs.hotkey.bind({"ctrl", "alt", "cmd"}, "Left", function()
       local win = hs.window.focusedWindow()
-      win:setFrame(resize.left(win:screen():frame(), win:frame()))
+      if not win then return end
+      win:setFrame(resize.shrinkh(win:screen():frame(), win:frame()))
 end)
 
 hs.hotkey.bind({"ctrl", "alt", "cmd"}, "Down", function()
       local win = hs.window.focusedWindow()
-      win:setFrame(resize.down(win:screen():frame(), win:frame()))
+      if not win then return end
+      win:setFrame(resize.growv(win:screen():frame(), win:frame()))
 end)
 
 hs.hotkey.bind({"ctrl", "alt", "cmd"}, "Up", function()
       local win = hs.window.focusedWindow()
-      win:setFrame(resize.up(win:screen():frame(), win:frame()))
+      if not win then return end
+      win:setFrame(resize.shrinkv(win:screen():frame(), win:frame()))
 end)
 
 -- move the window in a direction, pushing it towards the center, or the edge of the screen.
@@ -281,21 +214,25 @@ local move = {
 
 hs.hotkey.bind({"alt", "cmd"}, "Left", function()
       local win = hs.window.focusedWindow()
+      if not win then return end
       win:setFrame(move.left(win:screen():frame(), win:frame()))
 end)
 
 hs.hotkey.bind({"alt", "cmd"}, "Right", function()
       local win = hs.window.focusedWindow()
+      if not win then return end
       win:setFrame(move.right(win:screen():frame(), win:frame()))
 end)
 
 hs.hotkey.bind({"alt", "cmd"}, "Up", function()
       local win = hs.window.focusedWindow()
+      if not win then return end
       win:setFrame(move.up(win:screen():frame(), win:frame()))
 end)
 
 hs.hotkey.bind({"alt", "cmd"}, "Down", function()
       local win = hs.window.focusedWindow()
+      if not win then return end
       win:setFrame(move.down(win:screen():frame(), win:frame()))
 end)
 
