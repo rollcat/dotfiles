@@ -14,7 +14,7 @@ url_fix() {
 }
 
 _strip_protocol() {
-    sed -Ee 's#^(https|git)?://(.+)#\2#'
+    sed -Ee 's#^(https?|git?)?://(.+)#\2#'
 }
 
 _strip_user() {
