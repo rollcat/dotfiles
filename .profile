@@ -97,6 +97,8 @@ export LD_LIBRARY_PATH=~/.local/lib
 export LIBRARY_PATH=/opt/homebrew/lib
 export PKG_CONFIG_PATH=~/.local/lib/pkgconfig
 export PYTHONSTARTUP=~/.pythonrc.py
+export NVM_DIR="$HOME/.nvm"
+[ -f "/opt/homebrew/opt/nvm/nvm.sh" ] && . "/opt/homebrew/opt/nvm/nvm.sh"
 # NOTE: GOPATH and PYENV_ROOT belong here, but we also need them for $PATH
 
 # https://drewdevault.com/2021/08/06/goproxy-breaks-go.html
