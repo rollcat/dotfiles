@@ -1,5 +1,0 @@
-#!/bin/sh
-. ~/.profile
-set -eu
-# brew install cormacrelf/tap/dark-notify
-exec dark-notify -c update-theme
