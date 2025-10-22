@@ -1,0 +1,78 @@
+[
+    // Conventions
+    {
+        "key": "ctrl+tab",
+        "command": "workbench.action.nextEditor"
+    },
+    {
+        "key": "ctrl+shift+tab",
+        "command": "workbench.action.previousEditor"
+    },
+    // macOS conventions
+    {
+        "key": "cmd+1",
+        "command": "workbench.action.openEditorAtIndex1"
+    },
+    {
+        "key": "cmd+2",
+        "command": "workbench.action.openEditorAtIndex2"
+    },
+    {
+        "key": "cmd+3",
+        "command": "workbench.action.openEditorAtIndex3"
+    },
+    {
+        "key": "cmd+4",
+        "command": "workbench.action.openEditorAtIndex4"
+    },
+    {
+        "key": "cmd+5",
+        "command": "workbench.action.openEditorAtIndex5"
+    },
+    {
+        "key": "cmd+6",
+        "command": "workbench.action.openEditorAtIndex6"
+    },
+    {
+        "key": "cmd+7",
+        "command": "workbench.action.openEditorAtIndex7"
+    },
+    {
+        "key": "cmd+8",
+        "command": "workbench.action.openEditorAtIndex8"
+    },
+    {
+        "key": "cmd+9",
+        "command": "workbench.action.openEditorAtIndex9"
+    },
+    // macOS: conflicts with my custom global shortcuts
+    {
+        "key": "alt+shift+up",
+        "command": "editor.action.insertCursorAbove"
+    },
+    {
+        "key": "alt+shift+down",
+        "command": "editor.action.insertCursorBelow"
+    },
+    // focus
+    {
+        "key": "cmd+ctrl+e",
+        "command": "workbench.view.explorer"
+    },
+    {
+        "key": "cmd+ctrl+f",
+        "command": "workbench.view.search"
+    },
+    {
+        "key": "cmd+ctrl+t",
+        "command": "terminal.focus"
+    },
+    {
+        "key": "cmd+ctrl+shift+t",
+        "command": "workbench.action.terminal.new"
+    },
+    {
+        "key": "cmd+ctrl+g",
+        "command": "workbench.scm.focus"
+    },
+]

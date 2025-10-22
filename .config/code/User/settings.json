@@ -1,0 +1,75 @@
+{
+  // appearance
+  "editor.fontFamily": "Inconsolata, Terminus, Menlo, Monaco, monospace",
+  "window.autoDetectColorScheme": true,
+  "workbench.preferredLightColorTheme": "Visual Studio Light",
+  "[git-commit]": {
+    "editor.rulers": [
+      50
+    ]
+  },
+  "editor.rulers": [
+    72,
+    80,
+  ],
+  // features
+  "diffEditor.codeLens": true,
+  "explorer.confirmDelete": false,
+  "editor.accessibilitySupport": "off",
+  // editor behavior
+  "editor.autoClosingBrackets": "never",
+  "editor.autoClosingQuotes": "never",
+  "editor.autoClosingDelete": "never",
+  "editor.autoClosingOvertype": "never",
+  "editor.autoSurround": "never",
+  "editor.inlineSuggest.suppressSuggestions": true,
+  "editor.acceptSuggestionOnCommitCharacter": false,
+  "editor.quickSuggestions": {
+    "other": "off"
+  },
+  // git
+  "git.autofetch": false,
+  "github.branchProtection": false,
+  "github.gitAuthentication": false,
+  // no telemetry
+  "telemetry.feedback.enabled": false,
+  "telemetry.telemetryLevel": "off",
+  "telemetry.enableTelemetry": false,
+  "telemetry.enableCrashReporter": false,
+  "github-enterprise.uri": "http://localhost:1",
+  // no auto update
+  "update.mode": "none",
+  "extensions.autoUpdate": false,
+  "extensions.autoCheckUpdates": false,
+  "workbench.enableExperiments": false,
+  // no copilot
+  "chat.agent.enabled": false,
+  "chat.commandCenter.enabled": false,
+  "workbench.editor.empty.hint": "hidden",
+  "inlineChat.lineNaturalLanguageHint": false,
+  "extensions.ignoreRecommendations": true,
+  "extensions.showRecommendationsOnlyOnDemand": true,
+  "editor.inlineSuggest.enabled": false,
+  "terminal.integrated.shellIntegration.enabled": false,
+  "chat.agent.maxRequests": 0,
+  // languages
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.black-formatter"
+  },
+  "[go]": {
+    "editor.defaultFormatter": "golang.go"
+  },
+  "gopls": {
+    "formatting.gofumpt": true, // optional stricter formatting
+    "ui.completion.usePlaceholders": true,
+    "ui.semanticTokens": true
+  },
+  "[vue]": {
+    "editor.defaultFormatter": "Vue.volar"
+  },
+  // not sure what is this by the way
+  "typescript.tsserver.watchOptions": "vscode",
+  "workbench.startupEditor": "none",
+  "chat.focusWindowOnConfirmation": false,
+  "git.openRepositoryInParentFolders": "never",
+}
