@@ -11,7 +11,5 @@ auto-execute *.c c-mode
 
 # keys
 global-set-key "\eg" goto-line
-global-set-key "\^x\^c" kill-buffer
-global-set-key "\^x." save-buffers-kill-emacs
 global-set-key "\^x\^r" replace-string
 global-set-key "\^x\^f" find-file
