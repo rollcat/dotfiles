@@ -160,11 +160,6 @@ unset p
 # Allow nix-env to install non-free software
 export NIXPKGS_ALLOW_UNFREE=1
 
-# Aliases for interactive use
-alias py=python3
-alias ipy='python3 -m IPython'
-alias tf=terraform
-
 # Dear git, don't ask me for a password
 export GIT_TERMINAL_PROMPT=0
 
